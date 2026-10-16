@@ -412,8 +412,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1 -Ci    # CI�
 线上试玩版 = **已导出的静态文件**（`dist/web/`）由 `.github/workflows/deploy.yml` 直接发到 GitHub Pages；
 云端**不重编引擎**，所以"推上去了"就等于"线上就是这一版"。
 
-**一次性设置**（只能网页上点，文件改不了它）：
+**一次性设置**（文件改不了它，得改仓库设置）：
 仓库 → **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**。
+
+> 本仓库已设置好（2026-10-16，用已存的 GitHub 凭据调 API 把 Pages 的 `build_type` 从 `legacy` 切成 `workflow`：
+> `PUT /repos/mengxicao1-qwe/MaoshanMysteries/pages  {"build_type":"workflow"}`，返回 204）。
+> 切之前是"从分支部署（main / 根目录）"：Jekyll 会把 `README.md` 渲染成首页，真正的游戏在 `/dist/web/` 下面，
+> 于是根路径永远看不到试玩版 —— 这是本仓库踩过的坑，换成 `workflow` 后根路径才是 `dist/web/` 的内容。
 
 **日常发布流程**：
 
@@ -427,8 +432,17 @@ git commit -m "更新试玩版"
 git push
 ```
 
-**永久试玩地址**：`https://<你的用户名>.github.io/<仓库名>/`（形如 `https://someuser.github.io/DeepLoopGame/`）。
+**永久试玩地址**：<https://mengxicao1-qwe.github.io/MaoshanMysteries/>（通用形式 `https://<用户名>.github.io/<仓库名>/`）。
 每次 Actions 运行的摘要（Summary）里也会打印同一个地址；仓库首页右侧的 **Deployments / github-pages** 也能点进去。
+
+**已验证（2026-10-16，端到端）**：
+
+* `push` 到 `main` ⇒ 工作流 **部署 Web 试玩版** 自动跑（`event=push`，10 个步骤全 `success`），
+  旧的分支部署管线（`pages build and deployment`）不再触发、不会再覆盖。
+* 线上 `index.html` 与本地 `dist/web/index.html` **SHA1 一致**（`F32BBEB0BE87EAEC017EB6A7EE6722DBEB99BD26`），
+  `index.wasm` 39,514,754 字节以 `application/wasm` 返回、`index.pck` / `index.js` / `index.audio.position.worklet.js` 均 200。
+* 用无头 Edge（CDP）打开线上地址实测：标题页正常渲染（`.shots/web-pages-title.png`），
+  点【开始推演】能进主场景并弹出首次新手引导（`.shots/web-pages-live.png`）。
 
 **为什么 GitHub Pages 这种"不给自定义响应头"的静态托管也能跑**：
 

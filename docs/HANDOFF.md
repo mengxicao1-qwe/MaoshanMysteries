@@ -72,7 +72,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1        # 18 
   3. **不许用 PowerShell 的 `Get-Content`/`Set-Content` 读写项目源文件**（本机只有 PS 5.1，会按 ANSI 读中文 → 毁文件）。要动文件用 `[System.IO.File]::ReadAllBytes/WriteAllBytes`。
 * **省 token 的开发循环**：读 `docs/INDEX.md`（符号索引）→ 改 → 跑闸门 → 只在失败时读 `logs\check\<步骤>.log` 的相关几行。**不要**挨个 read 源文件。
 * **踩过的坑都在 `AGENTS.md` §4**（30+ 条实测，比如：`time_updated` 广播的是**剩余**秒数；`DirAccess.rename_absolute` 在 Windows 上非原子；`canvas_items` 下 `Control.size` 跟着窗口走、版面不许写死常量；`--headless` 截图是空图；跑过的存档会被心灯扣血，测试/截图必须先做存档快照）。
-* **版本控制**：本机已装 **Git 2.55**（`C:\Program Files\Git\cmd\git.exe`，**新开的终端**里直接可用；2026-10 之前装不上、当时用 `tools/snapshot.ps1` 顶班，现在它是额外兜底）。首次 `git push` 会弹浏览器登录（自带 Git Credential Manager）。**push 到 `main` 会自动把 `dist/web/` 发到 GitHub Pages**（`.github/workflows/deploy.yml`，地址 `https://<用户名>.github.io/<仓库名>/`，一次性设置见 `README.md` §8）；新 clone 第一次跑闸门前要先 `godot --headless --path . --import`（`.godot/` 不入库）。
+* **版本控制**：本机已装 **Git 2.55**（`C:\Program Files\Git\cmd\git.exe`，**新开的终端**里直接可用；2026-10 之前装不上、当时用 `tools/snapshot.ps1` 顶班，现在它是额外兜底）。首次 `git push` 会弹浏览器登录（自带 Git Credential Manager，凭据存进 Windows 凭据管理器后不再打扰）。**push 到 `main` 会自动把 `dist/web/` 发到 GitHub Pages**（`.github/workflows/deploy.yml`）：线上地址 **<https://mengxicao1-qwe.github.io/MaoshanMysteries/>**（通用形式 `https://<用户名>.github.io/<仓库名>/`）。Pages 的站点源必须是 **GitHub Actions**（本仓库已是 `build_type=workflow`；若是"从分支部署"，Jekyll 会把 `README.md` 渲染成首页、根路径看不到游戏 —— 见 `README.md` §8）。新 clone 第一次跑闸门前要先 `godot --headless --path . --import`（`.godot/` 不入库）。
 
 ---
 
