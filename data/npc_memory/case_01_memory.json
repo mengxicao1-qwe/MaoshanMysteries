@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "case_id": 1,
+    "case_title": "白鹄不举",
+    "purpose": "NPC 跨轮记忆规则（本项目调研认定的唯一空白差异位：竞品只做'物品重置 + 情报保留'，NPC 每遍重置）。记忆阶 = 满足的规则条数；判据只有两类：玩家持有的线索 + loop_index 下限。",
+    "stage_semantics": "台阶式：第 1 阶不成立 → 阶 = 0；第 k 阶不成立就停在第 k-1 阶。阶数不落盘、不新增持久状态，完全由'玩家现在知道什么 + 现在是第几遍'现算（scripts/entities/npc_memory.gd）。",
+    "require_min_loop_semantics": "0 基，与 data/dialogues/case_01_dialogues.json 的 unlock_if.loop_min 同口径：loop_min=2 ⇔ '第三遍起'；require_min_loop=6 ⇔ 第 7 遍起；require_min_loop=8 ⇔ 第 9 遍起（loop_index 0 = 第 1 遍，案一余页共走九遍）。",
+    "extra_dialogue_id_note": "只复用 data/dialogues/case_01_dialogues.json 里已成文的台词：跨轮记忆不新写台词，只把'本来要等到下一遍才说得出'的那一句还给 NPC——同一句话，因为玩家先知道了什么，所以提前说得出。",
+    "reveal_clue_id_note": "声明'这个 NPC 在这一阶能交出哪条线索'；真正 add_clue() 由表现层做（本组件绝不替玩家改记忆）。",
+    "source": "docs/story/09_系统映射与数据规格.md:60-100（secret.per_loop_mutation / 世界状态递进）、docs/story/09:17（订阅 loop_reset 者必须清掉仅属于上一遍的世界状态）；竞品空白点见 docs/market/01_立项调研与推荐方案.md §2.5"
+  },
+  "npcs": [
+    {
+      "npc_id": "npc_01_muqing",
+      "display_name": "穆青",
+      "room": "baihutai_west",
+      "rules": [
+        {
+          "require_clues": ["clue_01_four_in_three"],
+          "require_min_loop": 0,
+          "extra_dialogue_id": "mq_02b_two_hands",
+          "reveal_clue_id": "",
+          "note": "你手里已经有'三字位上的四字'：她不必等你解释，这一遍就把'这不是一只手'说出口（余页每遍把她重置，你的本子没有）"
+        },
+        {
+          "require_clues": ["clue_01_four_in_three", "clue_01_two_hands"],
+          "require_min_loop": 2,
+          "extra_dialogue_id": "mq_03_rubbing",
+          "reveal_clue_id": "",
+          "note": "'碑上两只手'进过本子：第二遍起她主动把道院库房带出来的半截拓本摊开——原本这一步要等第三遍之后"
+        },
+        {
+          "require_clues": ["clue_01_four_in_three", "clue_01_two_hands", "clue_01_rubbing_fragment"],
+          "require_min_loop": 4,
+          "extra_dialogue_id": "mq_04_three_sources",
+          "reveal_clue_id": "",
+          "note": "拓本末行抄下来了：她把县志、道院库房、甘家家谱三条材料一起摆给你看（三条互殴），不再等你先开口问"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_01_zheng_shoulu",
+      "display_name": "郑守录",
+      "room": "phone",
+      "rules": [
+        {
+          "require_clues": [],
+          "require_min_loop": 6,
+          "extra_dialogue_id": "zsl_03_papers",
+          "reveal_clue_id": "",
+          "note": "第 7 遍起：电话那头不再只念铁律，第一次说出'我守的是纸下面的人'——页外的人也在数遍数"
+        },
+        {
+          "require_clues": ["clue_01_three_sources_conflict"],
+          "require_min_loop": 6,
+          "extra_dialogue_id": "zsl_02_rule",
+          "reveal_clue_id": "",
+          "note": "'三条材料互相打架'一进本子，他把铁律三先说全：字不能乱改——他已经知道你在查'谁在余页里没有位置'"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_01_gan_fengyi",
+      "display_name": "甘凤仪",
+      "room": "gan_house",
+      "rules": [
+        {
+          "require_clues": ["clue_01_half_stroke_cun"],
+          "require_min_loop": 7,
+          "extra_dialogue_id": "gfy_04_bowl_bottom",
+          "reveal_clue_id": "clue_01_bowl_bottom",
+          "note": "半笔'寸'在手 + 第 8 遍起：她认得你手里的半笔，转身回碑阴把供桌的陶碗翻过来——碗底'甘氏领雨'四字（环六）由她交给你"
+        },
+        {
+          "require_clues": ["clue_01_half_stroke_cun", "clue_01_bowl_bottom"],
+          "require_min_loop": 8,
+          "extra_dialogue_id": "gfy_06_twohundred",
+          "reveal_clue_id": "",
+          "note": "第 9 遍起她才'察觉'重复：'我家这块碑认了二百年'——同一句话她说了二百年，只有你听得见第二遍"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_01_zhou_changgeng",
+      "display_name": "周长庚",
+      "room": "village_office",
+      "rules": [
+        {
+          "require_clues": [],
+          "require_min_loop": 8,
+          "extra_dialogue_id": "zcg_04_third_fall",
+          "reveal_clue_id": "",
+          "note": "第 9 遍起他自己先开口：'落三回。去年落两回。'——主持诵碑的人第一次把'去年'和这一遍连起来（NPC 察觉重复的样板）"
+        },
+        {
+          "require_clues": ["clue_01_date_untouched"],
+          "require_min_loop": 8,
+          "extra_dialogue_id": "zcg_03_chant_stall",
+          "reveal_clue_id": "",
+          "note": "日子没被改（三月十八还在）已进本子：他念到'召雨灌旱稻'接不上'某氏领雨'的那一秒停下来看你——他知道你上一遍就站在台下"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_01_liu_guijing",
+      "display_name": "刘桂英",
+      "room": "stall_east",
+      "rules": [
+        {
+          "require_clues": ["clue_01_hole_chipped", "clue_01_half_stroke_cun"],
+          "require_min_loop": 2,
+          "extra_dialogue_id": "lgj_04_silent",
+          "reveal_clue_id": "",
+          "note": "系线崩口 + 半笔'寸'都在你本子上：辰时末她不再跟着念最后一句，退到人群最后——她早就知道，只是没敢说；这一遍她不躲你了"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_01_wu_jingtang",
+      "display_name": "吴敬堂",
+      "room": "stone_steps",
+      "rules": [
+        {
+          "require_clues": ["clue_01_grey_bag"],
+          "require_min_loop": 4,
+          "extra_dialogue_id": "wjt_02_crack",
+          "reveal_clue_id": "",
+          "note": "灰布袋在你本子上：他不再背着你做那个十九年的习惯动作，当着你的面把手伸进碑座那条缝"
+        }
+      ]
+    }
+  ]
+}

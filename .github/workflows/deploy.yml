@@ -1,0 +1,77 @@
+# 把已经导出好的 Godot Web 试玩版（dist/web/）自动发布到 GitHub Pages。
+#
+# 触发：推送到 main 分支，或在仓库的 Actions 页面手动点 “Run workflow”。
+# 前提：本地跑过 tools\export_web.ps1 导出，并且 dist/web/ 已经提交进仓库。
+#
+# 一次性设置（只需在网页上点一次，文件改不了它）：
+#   仓库 → Settings → Pages → Build and deployment → Source 选 “GitHub Actions”
+#
+# 发布后的永久试玩地址（形如）：
+#   https://<你的用户名>.github.io/<仓库名>/
+
+name: 部署 Web 试玩版
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 部署 Pages 需要这三个权限（contents 只读、pages 写入、id-token 拿 OIDC）
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只允许一个部署；新推送排队等候，不打断正在进行的发布
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: 发布 dist/web 到 Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: 取出仓库内容
+        uses: actions/checkout@v4
+
+      - name: 校验导出产物（缺文件就失败，别把黑屏发上去）
+        run: |
+          set -euo pipefail
+          missing=0
+          for f in index.html index.js index.wasm index.pck; do
+            if [ ! -f "dist/web/$f" ]; then
+              echo "::error::缺少 dist/web/$f —— 请先在本地跑 tools\\export_web.ps1 导出，再把 dist/web/ 一起提交"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+          echo "index.wasm ：$(du -h dist/web/index.wasm | cut -f1)"
+          echo "index.pck  ：$(du -h dist/web/index.pck | cut -f1)"
+          echo "整体大小   ：$(du -sh dist/web | cut -f1)"
+
+      - name: 关掉 Jekyll 处理（防止下划线开头的文件被吞）
+        run: touch dist/web/.nojekyll
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 打包成 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/web
+
+      - name: 部署到 Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: 把试玩地址写进 Actions 摘要
+        run: |
+          echo "### 🎮 试玩地址" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

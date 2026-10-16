@@ -1,0 +1,10 @@
+# 一律不做换行符转换：本仓库有“生成物字节级漂移检查”（tools\check.ps1 的 -Ci），
+# 换行被 Git 改写会变成假 DRIFT，所以全库按原字节存取。
+* -text
+
+# 二进制产物（不参与 diff，也绝不能被当文本处理）
+*.png binary
+*.ttf binary
+*.wasm binary
+*.pck binary
+*.zip binary

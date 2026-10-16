@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "map_id": "maoshan_baihutai",
+    "case_id": 1,
+    "case_title": "白鹄不举",
+    "loop_duration_seconds": 360,
+    "rooms": [
+      "baihutai",
+      "baihutai_bei",
+      "baihutai_side",
+      "baihutai_south",
+      "baihutai_west",
+      "baihutai_yang",
+      "crowd",
+      "crowd_back",
+      "gan_house",
+      "off_page",
+      "phone",
+      "stall",
+      "stall_east",
+      "stele_base",
+      "stone_steps",
+      "stone_steps_7",
+      "village_office"
+    ],
+    "description": "卷一·案一《白鹄不举》。茅山大茅峰下白鹄台：碑阴第十九行'不详其姓'四字挤在三个字的位置上，纸鹄每遍第三落，诵碑念到'召雨灌旱稻'接不上'某氏领雨'——辰时末，余页翻回卯时初。活人动线每遍一模一样，玩家要数出的是'谁在余页里没有位置'。",
+    "source": "docs/story/04_案件_案一至案二.md §案一（余页 / 活人动线 / 缝 / 证据链）；数值口径 docs/story/09_系统映射与数据规格.md §2/§3/§4",
+    "duration_note": "docs/story/09 §2 定案一余页为 360 秒；docs/story/04 正文骨架按 420 秒书写（t_offset 0-420）。超出 360 的两个拍点顺移到 345/355（原文 400 下山 / 420 辰时末），其余节点一律沿用原文 t_offset（0 / 35 / 70 / 140 / 175 / 210 / 245）。",
+    "casting_note": "docs/story/04 §5、§6 两位 NPC 都写作'邱德茂'（§5 管事人 52 岁、§6 修碑匠人 45 岁），而 02_ 与 04_ 真相节都认 45 岁的修碑匠人邱德茂为本案反方。此处保留 npc_01_qiu_demao = 修碑匠人 邱德茂（45 岁，反方，凿字的人）；52 岁管事人按 04_ 落表骨架里出现的另一个 id 'zhou_changgeng' 命名为 周长庚（npc_01_zhou_changgeng，主持诵碑、挑鹄的人）。若 Lead 另有裁定，只改 display_name 与对话署名，npc_id 不动。",
+    "secret": {
+      "kind": "inscribed_name",
+      "target": "碑阴第十九行的三个字：甘守朴（被凿去后就地改刻四字'不详其姓'）",
+      "motive": "诸本无征，宁阙毋诬；不移字则整通碑被判非灵迹、移入库房，移字只牺牲一行——'我改了一个名字，救了一通碑。'",
+      "note": "缝在'名籍'上：日期没被改，名字没了。三月十八还在，应这个名字的人没了——按铁律三，期会日不可空，空掉的那一格正是今年的死线。",
+      "per_loop_mutation": {
+        "mode": "grow",
+        "affected_rooms": ["baihutai_bei", "baihutai_yang", "phone"],
+        "affected_entities": ["inscription_last_row", "rubbing_fragment", "paper_kite", "phone_call"],
+        "note": "每多走一遍，余页里就多一分'不属于这一天'的杂讯（谷虫）：拓纸上的旧凿痕多一道灰影、纸鹄落点上的灰多一层、电话里的杂音长一分。到第七遍日月位置对不上——须以服饵断谷辨杂讯、以存思日月定方位。卷一的苏景玄只会一点粗浅叩齿咽津，药与方位都由郑守录给药／代报，主角照着记。"
+      },
+      "resolve_conditions": {
+        "require_clues": [
+          "clue_01_four_in_three",
+          "clue_01_half_stroke_cun",
+          "clue_01_rubbing_fragment",
+          "clue_01_stone_dust",
+          "clue_01_three_sources_conflict",
+          "clue_01_bowl_bottom"
+        ],
+        "require_min_loop": 8,
+        "require_ritual": "huizhao_songbei",
+        "note": "六环各取一条（环一→环六），顺序不可颠倒；跳过环五、环六，本案会被结为'无异常'。补写仪式只做确认：摊录、把末行读完——不改一个字、不碰一块石头、不替人应名。require_min_loop=8 对应 docs/story/04：本案余页共走九遍（loop_index 0 起，第 9 遍可回照全页）。"
+      }
+    }
+  },
+  "npcs": [
+    {
+      "npc_id": "npc_01_muqing",
+      "display_name": "穆青",
+      "role": "碑刻与文献研究者（27 岁，项目外聘）",
+      "default_room": "baihutai_west",
+      "timeline": [
+        { "second": 0, "room": "baihutai_west", "action": "setup_rubbing_kit", "facing": "east", "dialogue_id": "mq_00_arrive", "clue_id": "", "note": "卯时初：台上西侧摊开拓包、摺尺、强光笔。她说话不带形容词，第一句就是'这条不成立'。" },
+        { "second": 70, "room": "baihutai_west", "action": "measure_stele", "facing": "west", "dialogue_id": "mq_01_measure", "clue_id": "clue_01_four_in_three", "loop_min": 2, "note": "卯时二刻（原文 t=70）：架摺尺量碑、拍照、做拓前清面。末行字身瘦、字口窄，行距与上十八行不合，凿平面恰好三字宽。" },
+        { "second": 210, "room": "baihutai_bei", "action": "copy_inscription", "facing": "north", "dialogue_id": "mq_02_copy_stuck", "clue_id": "clue_01_two_hands", "note": "辰时正（原文 t=210）：抄碑文，抄到末行笔停住。'这一行我抄了三遍，三遍都读不通。'——环一的目击点。" },
+        { "second": 240, "room": "baihutai_bei", "action": "hand_over_rubbing", "facing": "north", "dialogue_id": "mq_03_rubbing", "clue_id": "clue_01_rubbing_fragment", "loop_min": 2, "note": "辰时三刻前：她把从道院库房带出来的民国拓本《白鹄台碑》后半截交出来——末行'甘守朴'拓得清清楚楚（环三）。" },
+        { "second": 300, "room": "baihutai_bei", "action": "report_three_sources", "facing": "north", "dialogue_id": "mq_04_three_sources", "clue_id": "clue_01_three_sources_conflict", "note": "现实层跑完县图书馆与道院库房后回页报告：县志、家谱、《茅山志》三条材料互相打架（环五——反方'诸本无征'是真的）。" },
+        { "second": 355, "room": "baihutai_south", "action": "close_notebook", "facing": "south", "dialogue_id": "mq_05_again", "clue_id": "clue_01_date_untouched", "note": "辰时末（原文 t=420→355）：她把本子合上，说'再来一次'。合本子之前，她把末行的日子念了一遍——三月十八，一个字没动。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_zheng_shoulu",
+      "display_name": "郑守录",
+      "role": "茅山道院老校录（73 岁，主角引路人，页外）",
+      "default_room": "off_page",
+      "timeline": [
+        { "second": 0, "room": "off_page", "action": "keep_records", "facing": "", "dialogue_id": "", "clue_id": "", "note": "余页之外：道院校录房。他不在这页上——只能在辰时三刻的电话里出现。" },
+        { "second": 245, "room": "phone", "action": "call_from_office", "facing": "", "dialogue_id": "zsl_01_call", "clue_id": "", "note": "辰时三刻（原文 t≈245）：每遍一字不差的电话，问的永远是同一句——'碑上那一行，念通了没有？'这是余页里唯一来自页外活人的声音，也是玩家的时间标尺。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_ayuan",
+      "display_name": "阿沅",
+      "role": "道院杂役（19 岁，听录人；本案不出现在余页里）",
+      "default_room": "off_page",
+      "timeline": [
+        { "second": 0, "room": "off_page", "action": "deliver_medicine_off_page", "facing": "", "dialogue_id": "", "clue_id": "", "note": "余页之外：郑守录遣她把制虫丸（一名初神去本丸）送到碑台。她进不了这一页——卷一服饵断谷不是主角的本领，药是别人送来的。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_gan_fengyi",
+      "display_name": "甘凤仪",
+      "role": "甘阿婆（73 岁，甘守朴第七世孙）",
+      "default_room": "gan_house",
+      "timeline": [
+        { "second": 0, "room": "gan_house", "action": "sit_by_door", "facing": "south", "dialogue_id": "gfy_00_door", "clue_id": "", "note": "卯时初：坐在老屋门内。门牌是空的，钉子还在（余页里门牌空白=缝在人身上）。" },
+        { "second": 70, "room": "gan_house", "action": "carry_bowl_out", "facing": "east", "dialogue_id": "gfy_01_lock_door", "clue_id": "", "note": "卯时二刻（原文 t=70）：捧一只陶碗出来，锁门。" },
+        { "second": 140, "room": "baihutai_bei", "action": "set_bowl_face_down", "facing": "north", "dialogue_id": "gfy_02_bowl_down", "clue_id": "", "note": "卯时三刻（原文 t=140）：把陶碗放在碑阴一侧，碗口朝下。'落了雨才翻过来。'——'无人领雨'的物证化。" },
+        { "second": 210, "room": "crowd", "action": "chant_and_stop", "facing": "north", "dialogue_id": "gfy_03_chant_stop", "clue_id": "", "note": "辰时正（原文 t=210）：跟着念诵，念到'召雨灌旱稻'就停，不出声。" },
+        { "second": 300, "room": "baihutai_bei", "action": "see_bowl_turned", "facing": "north", "dialogue_id": "gfy_04_bowl_bottom", "clue_id": "clue_01_bowl_bottom", "note": "第七遍起：若玩家把供桌上的陶碗翻过来，她会离开人群走回碑阴（玩家摆件改变她'看得见的'）。碗底刻着'甘氏领雨'四字（环六）。" },
+        { "second": 355, "room": "baihutai_south", "action": "turn_home", "facing": "east", "dialogue_id": "gfy_05_home", "clue_id": "", "note": "辰时末（原文 t=420→355）：'今年又没有人报名字。'转身回家。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_qiu_demao",
+      "display_name": "邱德茂",
+      "role": "修碑匠人（45 岁，本案反方：末行三字是他凿的）",
+      "default_room": "off_page",
+      "timeline": [
+        { "second": 0, "room": "off_page", "action": "idle_off_page", "facing": "", "dialogue_id": "", "clue_id": "", "note": "余页之外：他真正上碑台干活的时间在循环之外——'他不在这被改的一页上'，这是主角确认'他不是被写进去的人'的第一条线索。" },
+        { "second": 140, "room": "stone_steps_7", "action": "stand_with_grey_bag", "facing": "north", "dialogue_id": "qdm_01_steps", "clue_id": "", "note": "卯时三刻（原文 t=140）：走上石阶第七级，站住，手里提一只灰布口袋，看一眼碑台。他不上碑台——这一瞬是玩家唯一能截住他的时刻。" },
+        { "second": 170, "room": "stone_steps_7", "action": "open_the_bag", "facing": "north", "dialogue_id": "qdm_02_bag", "clue_id": "clue_01_stone_dust", "note": "第四遍起：他把袋子拎起来——袋里是三字凿下的石屑，粉末尚在；袋口系着双回结（环四）。'我凿的。改一处，留一处底——上头教的。'" },
+        { "second": 200, "room": "stone_steps_7", "action": "turn_and_leave", "facing": "south", "dialogue_id": "", "clue_id": "", "note": "辰时（原文 t=200→345 之前的中段）：转身下山，不进碑台。" },
+        { "second": 300, "room": "off_page", "action": "ignore_daughter_call", "facing": "", "dialogue_id": "", "clue_id": "", "note": "每遍辰时：他女儿打来电话，问晚上回不回家吃饭。他不接，按掉。——留给卷二的钩子：那时候他会不认得这个号码。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_zhou_changgeng",
+      "display_name": "周长庚",
+      "role": "鹄台村管事人（52 岁，主持诵碑、挑鹄的人）",
+      "default_room": "village_office",
+      "timeline": [
+        { "second": 0, "room": "village_office", "action": "prepare_offering", "facing": "east", "dialogue_id": "zcg_00_prepare", "clue_id": "", "note": "卯时初：在村委会备供桌、香烛。抽屉里压着那份无落款校勘意见书的复印件（折了三折，压在《护林员巡山记录》下面）。" },
+        { "second": 70, "room": "baihutai", "action": "carry_offering_table", "facing": "west", "dialogue_id": "zcg_01_carry", "clue_id": "", "note": "卯时二刻（原文 t=70）：带四个人把供桌抬到台前、摆香烛。" },
+        { "second": 140, "room": "baihutai", "action": "raise_kite_to_stele_top", "facing": "north", "dialogue_id": "zcg_02_kite", "clue_id": "", "note": "卯时三刻（原文 t=140）：以竹挑挑纸鹄上碑顶，鹄腹垂线系在碑阴小石孔上——'鹄举则雨至'。今年落三次。" },
+        { "second": 210, "room": "baihutai_yang", "action": "preside_chant_stall", "facing": "north", "dialogue_id": "zcg_03_chant_stall", "clue_id": "", "note": "辰时正（原文 t=210）：主持诵碑，念《茅山连金陵》。念到'召雨灌旱稻'后清嗓子，清三次，接不上'某氏领雨'——循环触发点。" },
+        { "second": 355, "room": "baihutai_side", "action": "pick_up_kite_third", "facing": "east", "dialogue_id": "zcg_04_third_fall", "clue_id": "", "note": "辰时末（原文 t=420→355）：第三次去捡纸鹄，脸色不好看。落点每遍一样，都在碑座东北角。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_liu_guijing",
+      "display_name": "刘桂英",
+      "role": "桂婶（61 岁，台前卖香烛纸扎）",
+      "default_room": "stall_east",
+      "timeline": [
+        { "second": 0, "room": "stall_east", "action": "set_up_stall", "facing": "west", "dialogue_id": "lgj_00_stall", "clue_id": "", "note": "卯时初：台下东侧摆摊，香、烛、黄纸。今年香客少。去年她系的那根线就老掉——她当时看见孔边有新崩的石屑，没敢说。" },
+        { "second": 70, "room": "stall", "action": "make_paper_kite", "facing": "north", "dialogue_id": "lgj_01_kite", "clue_id": "clue_01_hole_chipped", "note": "卯时二刻（原文 t=70）：摊后现场扎白纸鹄（每年一架，一炷香工夫）。她无意中说出'孔边上崩了新石屑'（环二的引子）。" },
+        { "second": 140, "room": "baihutai", "action": "hand_kite_over", "facing": "north", "dialogue_id": "lgj_02_hand_over", "clue_id": "clue_01_half_stroke_cun", "loop_min": 3, "note": "卯时三刻（原文 t=140）：把鹄交给邱德茂（管事人），叮嘱一句'挑高点'；顺手指出末行凿平面下缘还有一截没收干净——'守'字残存的半笔'寸'（环二）。" },
+        { "second": 210, "room": "stall", "action": "burn_paper", "facing": "east", "dialogue_id": "lgj_03_burn", "clue_id": "", "note": "辰时正（原文 t=210）：摊前烧纸，嘴里数落今年香客少。" },
+        { "second": 355, "room": "crowd_back", "action": "stay_silent", "facing": "north", "dialogue_id": "lgj_04_silent", "clue_id": "", "note": "辰时末（原文 t=420→355）：站在人群最后，不出声，眼圈红。" }
+      ]
+    },
+    {
+      "npc_id": "npc_01_wu_jingtang",
+      "display_name": "吴敬堂",
+      "role": "大茅峰看山人（61 岁）",
+      "default_room": "stone_steps",
+      "timeline": [
+        { "second": 0, "room": "stone_steps", "action": "begin_morning_patrol", "facing": "north", "dialogue_id": "", "clue_id": "", "note": "卯时初：他每遍从石阶下起巡（原文第一个拍点是卯时正 t=35 数着台阶上来）；这一秒他还没上到碑台。按契约一律补齐第 0 秒节点。" },
+        { "second": 35, "room": "stone_steps", "action": "patrol_count_steps", "facing": "north", "dialogue_id": "wjt_00_steps", "clue_id": "", "note": "卯时正（原文 t=35）：巡山上来，数台阶。他数了十九年，三百二十七级。" },
+        { "second": 140, "room": "baihutai_side", "action": "stand_watching", "facing": "west", "dialogue_id": "wjt_01_stand", "clue_id": "", "note": "卯时三刻（原文 t=140）：背手站在碑侧看。" },
+        { "second": 175, "room": "stele_base", "action": "reach_into_crack", "facing": "north", "dialogue_id": "wjt_02_crack", "clue_id": "clue_01_grey_bag", "loop_min": 4, "note": "辰时（原文 t=175）：蹲下，把手伸进碑座下的石缝里摸一摸，说'看看有没有积水'。他见过不止一次那只灰布袋——以为是游客丢的，还往里塞了塞（环四）。" },
+        { "second": 355, "room": "baihutai_south", "action": "shout_kite_fell", "facing": "north", "dialogue_id": "wjt_03_shout", "clue_id": "", "note": "辰时末（原文 t=420→355）：他第一个喊'鹄落了'。纸鹄每遍第三落、落点都在碑座东北角——循环的可见节拍，也是循环触发点的倒数。" }
+      ]
+    }
+  ]
+}

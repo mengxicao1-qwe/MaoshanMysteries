@@ -1,0 +1,22 @@
+# Godot 4 自动生成的导入缓存与编辑器状态（不要提交）
+.godot/
+
+# 导出 / 平台相关
+/android/
+# export_presets.cfg 要提交：导出参数（Web / 1280x720 / 无线程）得跟着仓库走，别人才能复现
+# dist 下只留 Web 试玩版（GitHub Pages 直接发它）；其它平台的导出物不入库
+dist/*
+!dist/web/
+dist/web/*.import
+
+# 本地过程产物：里程碑快照 / 截图 / 闸门日志 / 工具缓存（都可再生，别污染仓库和 Pages 产物）
+.backups/
+.shots/
+logs/
+.tools/
+.pnpm-store/
+
+# 系统杂物
+Thumbs.db
+desktop.ini
+*.tmp

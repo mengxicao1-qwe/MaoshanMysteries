@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "case_id": 1,
+    "case_title": "白鹄不举",
+    "purpose": "把 meta.secret.resolve_conditions.require_ritual（案一 = huizhao_songbei）做成可操作的输入层：玩家自己动手，把'照回原样'这件事做出来，而不是点一下结案。",
+    "source": "docs/story/04_案件_案一至案二.md:381-403（步骤四 存思回照 / 步骤五 摊录与诵碑）、docs/story/09_系统映射与数据规格.md:74-79",
+    "input_semantics": "一笔 = 一串方向：上/下/左/右/左上/右上/左下/右下（方向键或鼠标拖动都映射成同一套 token）。玩家按键把这一笔描出来，Backspace 退一笔重描。",
+    "stroke_semantics": "strokes 是参考笔顺：只比对'笔数 + 每一笔的方向串'，不比手速、长度、曲线、压感——键鼠和手柄画出来的同一笔必须判同一笔。",
+    "discrimination_semantics": "这是'辨笔'题的正面：near_miss 列出看起来像、其实差的写法（少一笔/多一笔/反向）。描错不算失败、不扣心灯，只把'差在哪一笔'说出来——玩家因此学会怎么读那道半笔。",
+    "step_semantics": "steps 按顺序过；前一步没过，后一步不进。require_clues 是这一步要的卡，gate_note 是给玩家看的'为什么现在做不了'。",
+    "cost_note": "仪式的代价走既有契约：主角身神按心灯口径消耗（docs/story/04:428-431，09 §5）；甘阿婆念出祖上的名字是她自己的代价，落在事件文本里，不写成数值。",
+    "failure_note": "画错/条件不够都只'这一遍不算'，不判负、不永久锁死（余页可以重开；线索跨遍保留）。"
+  },
+  "runes": [
+    {
+      "rune_id": "huizhao_songbei",
+      "name": "回照诵碑",
+      "display_name": "回照诵碑（把阙文照回原样）",
+      "source_note": "步骤四'存思回照'给的是姿势，步骤五'摊录与诵碑'给的是做法：摊开原件、请当事人自己念、不补刻、立校勘记、诵碑到底。",
+      "require_clues": [
+        "clue_01_four_in_three",
+        "clue_01_half_stroke_cun",
+        "clue_01_rubbing_fragment",
+        "clue_01_stone_dust",
+        "clue_01_three_sources_conflict",
+        "clue_01_bowl_bottom"
+      ],
+      "require_min_loop": 8,
+      "gate_note": "六环未齐、或还没走到第八遍余页：仪式的每一步都会告诉你缺哪一样。",
+      "room": "baihutai_bei",
+      "npc_id": "npc_01_gan_fengyi",
+      "steps": [
+        {
+          "step": 1,
+          "step_id": "spread_the_rubbing",
+          "name": "摊开原件",
+          "kind": "gate",
+          "require_clues": ["clue_01_rubbing_fragment"],
+          "gate_note": "民国拓本残纸还没到手：没有原件，就没有可照的东西。",
+          "text": "把民国拓本残纸摊在碑阴口，与碑面并列——不是贴上去，是并排放着。",
+          "note": "摊开一份原件不算'说给不该听的人'，因为内容没经过任何人的口（docs/story/04:393）。"
+        },
+        {
+          "step": 2,
+          "step_id": "draw_the_reflection",
+          "name": "照字（三笔）",
+          "kind": "draw",
+          "require_clues": ["clue_01_half_stroke_cun"],
+          "gate_note": "那道半笔还没看明白：照着错的样子描，描出来还是错的。",
+          "text": "以神识为灯，把这一段时间照回原样——三笔，一笔一笔来。",
+          "strokes": [
+            {
+              "index": 1,
+              "name": "回",
+              "pattern": ["right", "down", "left", "up"],
+              "note": "先围一圈：这一笔是'没有离开那一页'——回到原处，不是回到过去。"
+            },
+            {
+              "index": 2,
+              "name": "照",
+              "pattern": ["down", "down_right", "right", "down"],
+              "note": "再点灯：灯是从上往下照的，照的是碑，不是人。"
+            },
+            {
+              "index": 3,
+              "name": "录",
+              "pattern": ["right", "down", "right", "down"],
+              "note": "最后落笔成录：横平竖直，多一笔是补刻，少一笔是半笔。"
+            }
+          ],
+          "near_miss": [
+            {
+              "attempt_id": "nm_missing_dot",
+              "pattern": ["down", "down_right", "right"],
+              "hint": "少一笔——这正是那道半笔：石头上的'寸'就是缺了最后这一点，所以录上认不出这一手。",
+              "clue_note": "对应 clue_01_half_stroke_cun（半笔'寸'）。"
+            },
+            {
+              "attempt_id": "nm_extra_stroke",
+              "pattern": ["right", "down", "left", "up", "down"],
+              "hint": "多一笔——石头已经被凿过一次；再刻一次也是新的一手，是第二次篡改。",
+              "clue_note": "对应 docs/story/04:395-396（不补刻）。"
+            },
+            {
+              "attempt_id": "nm_reversed",
+              "pattern": ["left", "up", "right", "down"],
+              "hint": "方向反了——你画的是别人那一手。辨笔先认手，再认字。",
+              "clue_note": "对应主角的辨笔第一层'认手'（docs/story/04:122）。"
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "step_id": "let_her_read_it",
+          "name": "请当事人自己念",
+          "kind": "npc",
+          "npc_id": "npc_01_gan_fengyi",
+          "room": "baihutai_bei",
+          "require_clues": ["clue_01_bowl_bottom"],
+          "gate_note": "得先让甘阿婆知道碑上为什么没有她家的名字——可这本身就是要付账的一句话。",
+          "text": "把拓上的三个字请甘阿婆自己念出来。不是主角念，不是邱德茂念，不是穆青念——必须是甘家的人。",
+          "cost_text": "她一口气念完了那三个字，念得极顺。念完，她站在原地，忽然问了一句：'你方才说，我姓什么来着？'",
+          "note": "念出来仍要付代价：她说出祖上的名字，代价是她自己家的姓从她嘴里脱落（docs/story/04:417-426）。"
+        },
+        {
+          "step": 4,
+          "step_id": "no_re_carving",
+          "name": "不补刻",
+          "kind": "choice",
+          "require_clues": ["clue_01_stone_dust"],
+          "gate_note": "还没看清凿口的石屑：这一步是选'做什么'，不是选'说什么'。",
+          "text": "石头已经被凿过一次。我若再刻一次，那也是新的一手，是第二次篡改。",
+          "options": [
+            {
+              "option_id": "carve_it_back",
+              "text": "把三个字补刻回碑上",
+              "correct": false,
+              "reply": "凿口边缘的石屑还是新的。你这一刀下去，原石上就多了一手不属于它自己的笔。"
+            },
+            {
+              "option_id": "keep_the_gap",
+              "text": "只把'残'这件事记下来",
+              "correct": true,
+              "reply": "原石既已残，我能做的只有把'残'这件事记下来。"
+            }
+          ]
+        },
+        {
+          "step": 5,
+          "step_id": "chant_to_the_end",
+          "name": "诵碑到底",
+          "kind": "npc",
+          "npc_id": "npc_01_gan_fengyi",
+          "room": "baihutai_bei",
+          "text": "三月十八辰时正，全村在碑前重念《茅山连金陵》。念到'召雨灌旱稻'，甘阿婆接上三个字。",
+          "success_text": "这一句接上了。余页合上。",
+          "note": "仪式只是确认，不是打击：没有驱邪、没有斗法、没有降雨（docs/story/04:405-411）。"
+        }
+      ],
+      "success_text": "此雨与先此之旱，同属天时。唯名既归位，旱始有人认领。",
+      "fail_text": "还差一步：回照的关键不在画得像，在笔数与笔顺对不对得上原石。"
+    }
+  ],
+  "inputs": {
+    "tokens": ["up", "down", "left", "right", "up_left", "up_right", "down_left", "down_right"],
+    "key_map": {
+      "up": "KEY_UP",
+      "down": "KEY_DOWN",
+      "left": "KEY_LEFT",
+      "right": "KEY_RIGHT",
+      "up_left": "KEY_KP_7",
+      "up_right": "KEY_KP_9",
+      "down_left": "KEY_KP_1",
+      "down_right": "KEY_KP_3"
+    },
+    "key_map_alt": {
+      "up_left": "KEY_UP+KEY_LEFT",
+      "up_right": "KEY_UP+KEY_RIGHT",
+      "down_left": "KEY_DOWN+KEY_LEFT",
+      "down_right": "KEY_DOWN+KEY_RIGHT"
+    },
+    "backspace_key": "KEY_BACKSPACE",
+    "commit_key": "KEY_ENTER",
+    "note": "表现层（scripts/ui/slice_hud.gd）按这套映射收方向：四个正方向直接用方向键，四个斜向用小键盘 1/3/7/9；键盘上没有小键盘时用 key_map_alt 里的组合键。鼠标/触屏拖动只需把位移向量量化到最近的 token——同一套数据同时服务键鼠、手柄与移动端。"
+  }
+}

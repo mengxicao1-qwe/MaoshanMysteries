@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "map_id": "manor_01",
+    "loop_duration_seconds": 420,
+    "rooms": [
+      "hall",
+      "kitchen",
+      "dining_room",
+      "library",
+      "corridor_2f",
+      "cellar",
+      "garden"
+    ],
+    "description": "阶段一测试数据表：仅覆盖循环前 60 秒。未列出的时段沿用最近一个已生效的节点状态。"
+  },
+  "npcs": [
+    {
+      "npc_id": "npc_01_butler",
+      "display_name": "执事·塞巴斯",
+      "default_room": "hall",
+      "timeline": [
+        {
+          "second": 0,
+          "room": "kitchen",
+          "action": "prep_wine",
+          "facing": "east",
+          "dialogue_id": "butler_00_prep_wine",
+          "note": "开局在后厨验酒，玩家若此时进厨房可偷听到他自言自语。"
+        },
+        {
+          "second": 25,
+          "room": "hall",
+          "action": "greet_guests",
+          "facing": "south",
+          "dialogue_id": "butler_01_greet_guests",
+          "note": "回到门厅迎接宾客，会点名确认到场人数。"
+        },
+        {
+          "second": 50,
+          "room": "dining_room",
+          "action": "arrange_table",
+          "facing": "north",
+          "dialogue_id": "butler_02_arrange_table",
+          "clue_id": "clue_butler_counts_chairs",
+          "note": "摆餐具时反复清点椅子数量 —— 首次目击解锁线索：椅子比宾客多一把。"
+        }
+      ]
+    },
+    {
+      "npc_id": "npc_02_lady",
+      "display_name": "庄园夫人·伊莎贝尔",
+      "default_room": "dining_room",
+      "timeline": [
+        {
+          "second": 0,
+          "room": "dining_room",
+          "action": "sit_at_table",
+          "facing": "south",
+          "dialogue_id": "lady_00_sit_at_table",
+          "note": "开场端坐主位，此时搭话只会得到寒暄。"
+        },
+        {
+          "second": 30,
+          "room": "corridor_2f",
+          "action": "walk_to_library",
+          "facing": "north",
+          "dialogue_id": "",
+          "note": "借口补妆离席上楼，玩家跟随会触发跟踪判定。"
+        },
+        {
+          "second": 55,
+          "room": "library",
+          "action": "hide_letter",
+          "facing": "west",
+          "dialogue_id": "lady_01_hide_letter",
+          "clue_id": "clue_lady_hides_letter",
+          "note": "在书房把一封信塞进书架暗格 —— 首轮很难看完整个动作，是时间循环的核心动机之一。"
+        }
+      ]
+    }
+  ]
+}

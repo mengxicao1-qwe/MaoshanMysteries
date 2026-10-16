@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/title_scene.gd" id="1_0"]
+
+[node name="TitleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_0")
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.945, 0.902, 0.796, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.018, 0.026, 0.9)
+theme_override_constants/outline_size = 8
+text = "茅山秘录·诡异录"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="."]
+layout_mode = 0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.847, 0.816, 0.749, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.018, 0.026, 0.85)
+theme_override_constants/outline_size = 6
+text = "第一案 · 白鹄不举"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="."]
+layout_mode = 0
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.635, 0.655, 0.694, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.018, 0.026, 0.8)
+theme_override_constants/outline_size = 5
+text = "一轮余页 · 六分钟 · 记得越多，代价越大"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 0
+text = "【开始推演】"

@@ -1,0 +1,2347 @@
+{
+  "autoloads": {
+    "PersistentMemoryManager": "res://scripts/core/persistent_memory_manager.gd",
+    "TimeLoopManager": "res://scripts/core/time_loop_manager.gd"
+  },
+  "data_files": [
+    {
+      "ok": true,
+      "path": "res://data/npc_timelines.json",
+      "summary": "schema=1 map=manor_01 循环=420秒 NPC=2 节点=6"
+    }
+  ],
+  "main_scene": "res://scenes/title_scene.tscn",
+  "modules": [
+    {
+      "autoload_name": "PersistentMemoryManager",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "SAVE_VERSION = 1"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "persistent_memory_manager.gd —— 跨循环记忆 / 线索管理器（核心系统 / Core）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 172,
+      "methods": [
+        {
+          "name": "add_clue",
+          "signature": "func add_clue(clue_id: String, source_loop: int = …) -> bool"
+        },
+        {
+          "name": "add_clues",
+          "signature": "func add_clues(clue_ids: Array, source_loop: int = …) -> int"
+        },
+        {
+          "name": "has_clue",
+          "signature": "func has_clue(clue_id: String) -> bool"
+        },
+        {
+          "name": "has_all_clues",
+          "signature": "func has_all_clues(clue_ids: Array) -> bool"
+        },
+        {
+          "name": "get_clues",
+          "signature": "func get_clues() -> Array[String]"
+        },
+        {
+          "name": "get_clue_count",
+          "signature": "func get_clue_count() -> int"
+        },
+        {
+          "name": "get_clue_record",
+          "signature": "func get_clue_record(clue_id: String) -> Dictionary"
+        },
+        {
+          "name": "get_save_data",
+          "signature": "func get_save_data() -> Dictionary"
+        },
+        {
+          "name": "apply_save_data",
+          "signature": "func apply_save_data(data: Dictionary) -> bool"
+        },
+        {
+          "name": "reset_for_new_game",
+          "signature": "func reset_for_new_game() -> void"
+        }
+      ],
+      "path": "res://scripts/core/persistent_memory_manager.gd",
+      "private_methods": 0,
+      "role": "autoload",
+      "signals": [
+        {
+          "args": "clue_id: String, source_loop: int",
+          "name": "clue_added"
+        },
+        {
+          "args": "clue_id: String",
+          "name": "clue_duplicate_ignored"
+        },
+        {
+          "args": "",
+          "name": "memory_reset"
+        }
+      ]
+    },
+    {
+      "autoload_name": "TimeLoopManager",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "DEFAULT_LOOP_DURATION = 420.0",
+        "MIN_LOOP_DURATION = 1.0",
+        "MAX_LOOP_DURATION = 3600.0",
+        "MAX_TIME_SCALE = 200.0"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "time_loop_manager.gd —— 时间循环控制器（核心系统 / Core）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 310,
+      "methods": [
+        {
+          "name": "tick",
+          "signature": "func tick(delta: float) -> void"
+        },
+        {
+          "name": "start_loop",
+          "signature": "func start_loop() -> void"
+        },
+        {
+          "name": "trigger_loop_reset",
+          "signature": "func trigger_loop_reset() -> void"
+        },
+        {
+          "name": "pause_loop",
+          "signature": "func pause_loop() -> void"
+        },
+        {
+          "name": "resume_loop",
+          "signature": "func resume_loop() -> void"
+        },
+        {
+          "name": "toggle_pause",
+          "signature": "func toggle_pause() -> void"
+        },
+        {
+          "name": "set_time_scale",
+          "signature": "func set_time_scale(value: float) -> void"
+        },
+        {
+          "name": "get_time_scale",
+          "signature": "func get_time_scale() -> float"
+        },
+        {
+          "name": "get_loop_duration",
+          "signature": "func get_loop_duration() -> float"
+        },
+        {
+          "name": "set_loop_duration",
+          "signature": "func set_loop_duration(seconds: float) -> void"
+        },
+        {
+          "name": "is_running",
+          "signature": "func is_running() -> bool"
+        },
+        {
+          "name": "is_paused",
+          "signature": "func is_paused() -> bool"
+        },
+        {
+          "name": "get_loop_index",
+          "signature": "func get_loop_index() -> int"
+        },
+        {
+          "name": "reset_loop_index",
+          "signature": "func reset_loop_index() -> void"
+        },
+        {
+          "name": "get_remaining_seconds",
+          "signature": "func get_remaining_seconds() -> int"
+        },
+        {
+          "name": "get_elapsed_seconds",
+          "signature": "func get_elapsed_seconds() -> int"
+        },
+        {
+          "name": "get_remaining_time",
+          "signature": "func get_remaining_time() -> float"
+        },
+        {
+          "name": "get_elapsed_time",
+          "signature": "func get_elapsed_time() -> float"
+        },
+        {
+          "name": "get_progress_ratio",
+          "signature": "func get_progress_ratio() -> float"
+        }
+      ],
+      "path": "res://scripts/core/time_loop_manager.gd",
+      "private_methods": 6,
+      "role": "autoload",
+      "signals": [
+        {
+          "args": "current_second",
+          "name": "time_updated"
+        },
+        {
+          "args": "",
+          "name": "loop_reset"
+        },
+        {
+          "args": "loop_index",
+          "name": "loop_started"
+        },
+        {
+          "args": "",
+          "name": "loop_timeout"
+        },
+        {
+          "args": "is_paused",
+          "name": "pause_changed"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "SCENARIO_DIR = res://data/scenarios",
+        "NODE_FIELDS = [\"second\", \"room\", \"action\", \"facing\", \"dialogue_id\", \"cl…",
+        "FACINGS = [\"north\", \"south\", \"east\", \"west\", \"\"]"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "case_loader.gd —— 案件数据装载（data 层，纯只读，零 UI / 零场景引用）",
+      "expected_checks": 0,
+      "inner_classes": [
+        "TimelineNode",
+        "NPCSchedule",
+        "CaseData"
+      ],
+      "lines": 495,
+      "methods": [
+        {
+          "name": "list_case_files",
+          "signature": "static func list_case_files() -> PackedStringArray"
+        },
+        {
+          "name": "find_case_path",
+          "signature": "static func find_case_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "load_case",
+          "signature": "static func load_case(path: String = …) -> CaseData"
+        },
+        {
+          "name": "parse_text",
+          "signature": "static func parse_text(text: String, path: String = …) -> CaseData"
+        },
+        {
+          "name": "parse_dictionary",
+          "signature": "static func parse_dictionary(data: Dictionary, path: String = …) -> CaseData"
+        }
+      ],
+      "path": "res://scripts/data/case_loader.gd",
+      "private_methods": 3,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "SAVE_PATH = user://clue_store.json",
+        "TMP_PATH = user://clue_store.json.tmp",
+        "BAK_PATH = user://clue_store.json.bak",
+        "CORRUPT_PATH = user://clue_store.json.corrupt",
+        "SAVE_VERSION = 2",
+        "KEY_VERSION = version",
+        "KEY_CLUES = clues",
+        "KEY_FORGOTTEN = forgotten",
+        "KEY_LAMP_VALUE = lamp_value",
+        "KEY_SEEN_UNIX = seen_unix",
+        "DEFAULT_LAMP_VALUE = 100"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "clue_store.gd —— 线索 + 心灯数值持久化（崩溃安全 / 双档轮换）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 408,
+      "methods": [
+        {
+          "name": "save",
+          "signature": "static func save(clues: Array) -> bool"
+        },
+        {
+          "name": "mark_forgotten",
+          "signature": "static func mark_forgotten(clue_id: String) -> bool"
+        },
+        {
+          "name": "unmark_forgotten",
+          "signature": "static func unmark_forgotten(clue_id: String) -> bool"
+        },
+        {
+          "name": "save_lamp_state",
+          "signature": "static func save_lamp_state(value: int, seen_unix: int) -> bool"
+        },
+        {
+          "name": "save_lamp_value",
+          "signature": "static func save_lamp_value(value: int) -> bool"
+        },
+        {
+          "name": "erase_store",
+          "signature": "static func erase_store() -> bool"
+        },
+        {
+          "name": "load_clues",
+          "signature": "static func load_clues() -> Array[String]"
+        },
+        {
+          "name": "load_forgotten",
+          "signature": "static func load_forgotten() -> Array[String]"
+        },
+        {
+          "name": "is_forgotten",
+          "signature": "static func is_forgotten(clue_id: String) -> bool"
+        },
+        {
+          "name": "load_lamp_state",
+          "signature": "static func load_lamp_state() -> Dictionary"
+        },
+        {
+          "name": "load_lamp_value",
+          "signature": "static func load_lamp_value() -> int"
+        }
+      ],
+      "path": "res://scripts/data/clue_store.gd",
+      "private_methods": 7,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "DIALOGUE_DIR = res://data/dialogues",
+        "SCENARIO_DIR = res://data/scenarios",
+        "CLUE_DIR = res://data/clues",
+        "CLUE_ID_PATTERN = ^(clue|note|sealed)_[a-z0-9]+(_[a-z0-9]+)*$",
+        "DEFAULT_MIN_SECONDS = 1",
+        "OPTION_FIELDS = [\"text\", \"reply\", \"goto\", \"require_clues\", \"require_loop_…"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "dialogue_loader.gd —— 对话登记表装载（data 层，纯只读，零 UI / 零场景 / 零 Autoload）",
+      "expected_checks": 0,
+      "inner_classes": [
+        "DialogueLine",
+        "DialogueOption",
+        "DialogueEntry",
+        "DialogueTable"
+      ],
+      "lines": 1279,
+      "methods": [
+        {
+          "name": "reset_context",
+          "signature": "static func reset_context() -> void"
+        },
+        {
+          "name": "context_summary",
+          "signature": "static func context_summary() -> String"
+        },
+        {
+          "name": "set_context_npcs",
+          "signature": "static func set_context_npcs(mapping: Dictionary) -> void"
+        },
+        {
+          "name": "set_context_clue_ids",
+          "signature": "static func set_context_clue_ids(ids: Array) -> void"
+        },
+        {
+          "name": "set_context_duration",
+          "signature": "static func set_context_duration(seconds: int) -> void"
+        },
+        {
+          "name": "list_dialogue_files",
+          "signature": "static func list_dialogue_files() -> PackedStringArray"
+        },
+        {
+          "name": "find_dialogue_path",
+          "signature": "static func find_dialogue_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "find_scenario_path",
+          "signature": "static func find_scenario_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "load_clue_registry",
+          "signature": "static func load_clue_registry(case_id: int = …) -> Array[String]"
+        },
+        {
+          "name": "load_npc_names",
+          "signature": "static func load_npc_names(case_path: String) -> Dictionary"
+        },
+        {
+          "name": "load_dialogue_anchors",
+          "signature": "static func load_dialogue_anchors(case_path: String) -> Dictionary"
+        },
+        {
+          "name": "load_case_duration",
+          "signature": "static func load_case_duration(case_path: String) -> int"
+        },
+        {
+          "name": "load_for_case",
+          "signature": "static func load_for_case(case_id: int = …) -> DialogueTable"
+        },
+        {
+          "name": "load_from_file",
+          "signature": "static func load_from_file(path: String, case_path: String = …) -> DialogueTable"
+        },
+        {
+          "name": "parse_text",
+          "signature": "static func parse_text(text: String, path: String = …) -> DialogueTable"
+        },
+        {
+          "name": "parse_dictionary",
+          "signature": "static func parse_dictionary(data: Dictionary, path: String = …) -> DialogueTable"
+        }
+      ],
+      "path": "res://scripts/data/dialogue_loader.gd",
+      "private_methods": 3,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "MAP_DIR = res://data/maps",
+        "SUPPORTED_SCHEMA_VERSION = 1",
+        "LONG_TRAVEL_WARNING_SECONDS = 180",
+        "SUGGEST_MAX_DISTANCE = 3"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "map_loader.gd —— 案发地的走位图装载（data 层，纯只读，零 UI / 零场景引用）",
+      "expected_checks": 0,
+      "inner_classes": [
+        "RoomMap"
+      ],
+      "lines": 549,
+      "methods": [
+        {
+          "name": "list_map_files",
+          "signature": "static func list_map_files() -> PackedStringArray"
+        },
+        {
+          "name": "find_map_path",
+          "signature": "static func find_map_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "load_for_case",
+          "signature": "static func load_for_case(case_id: int = …) -> RoomMap"
+        },
+        {
+          "name": "load_from_file",
+          "signature": "static func load_from_file(path: String = …, case_id: int = …) -> RoomMap"
+        },
+        {
+          "name": "parse_text",
+          "signature": "static func parse_text(text: String, path: String = …) -> RoomMap"
+        },
+        {
+          "name": "parse_dictionary",
+          "signature": "static func parse_dictionary(data: Dictionary, path: String = …) -> RoomMap"
+        }
+      ],
+      "path": "res://scripts/data/map_loader.gd",
+      "private_methods": 5,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "NPCTimelineParser",
+      "constants": [
+        "DEFAULT_TIMELINE_PATH = res://data/npc_timelines.json",
+        "SUPPORTED_SCHEMA_VERSION = 1",
+        "DEFAULT_LOOP_DURATION_SECONDS = 420"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "npc_timeline_parser.gd —— NPC 动线 JSON 解析器（数据层 / Data）",
+      "expected_checks": 0,
+      "inner_classes": [
+        "TimelineNode",
+        "NPCSchedule",
+        "ParseResult"
+      ],
+      "lines": 414,
+      "methods": [
+        {
+          "name": "load_from_file",
+          "signature": "static func load_from_file(path: String = …) -> ParseResult"
+        },
+        {
+          "name": "parse_text",
+          "signature": "static func parse_text(text: String, source_label: String = …) -> ParseResult"
+        },
+        {
+          "name": "parse_dictionary",
+          "signature": "static func parse_dictionary(root: Dictionary, source_label: String = …) -> ParseResult"
+        }
+      ],
+      "path": "res://scripts/data/npc_timeline_parser.gd",
+      "private_methods": 3,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "DEFAULT_CASE_ID = 1",
+        "RUNE_DIR = res://data/runes",
+        "CLUE_DIR = res://data/clues",
+        "SCENARIO_DIR = res://data/scenarios",
+        "SUPPORTED_SCHEMA_VERSION = 1",
+        "KINDS = [\"gate\", \"draw\", \"npc\", \"choice\"]",
+        "RUNE_KEYS = [\"rune_id\", \"name\", \"display_name\", \"source_note\", \"requi…",
+        "STEP_KEYS = [\"step\", \"step_id\", \"name\", \"kind\", \"require_clues\", \"gat…",
+        "STROKE_KEYS = [\"index\", \"name\", \"pattern\", \"note\"]",
+        "NEAR_MISS_KEYS = [\"attempt_id\", \"pattern\", \"hint\", \"clue_note\"]",
+        "OPTION_KEYS = [\"option_id\", \"text\", \"correct\", \"reply\"]",
+        "WRONG_HINT = 这一笔对不上原石：笔顺或方向不对。可以退一笔重描。"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "scripts/data/rune_loader.gd —— M1 第 ⑤ 步：辨笔画符（画符输入）的**数据层**",
+      "expected_checks": 0,
+      "inner_classes": [
+        "RuneStroke",
+        "RuneNearMiss",
+        "RuneOption",
+        "RuneStep",
+        "RuneEntry",
+        "RuneTable"
+      ],
+      "lines": 958,
+      "methods": [
+        {
+          "name": "load_for_case",
+          "signature": "static func load_for_case(case_id: int = …) -> RuneTable"
+        },
+        {
+          "name": "load_from_file",
+          "signature": "static func load_from_file(path: String, case_path: String = …) -> RuneTable"
+        },
+        {
+          "name": "parse_text",
+          "signature": "static func parse_text(text: String, path: String = …, case_path: String = …) -> RuneTable"
+        },
+        {
+          "name": "parse_dictionary",
+          "signature": "static func parse_dictionary(data: Dictionary, path: String = …, case_path: String = …) -> RuneTable"
+        },
+        {
+          "name": "list_rune_files",
+          "signature": "static func list_rune_files() -> Array[String]"
+        },
+        {
+          "name": "find_rune_path",
+          "signature": "static func find_rune_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "find_scenario_path",
+          "signature": "static func find_scenario_path(case_id: int = …) -> String"
+        },
+        {
+          "name": "load_known_clue_ids",
+          "signature": "static func load_known_clue_ids() -> Array[String]"
+        }
+      ],
+      "path": "res://scripts/data/rune_loader.gd",
+      "private_methods": 0,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "PREFS_PATH = user://ui_prefs.json",
+        "PREFS_VERSION = 1",
+        "KEY_VERSION = version",
+        "KEY_TUTORIAL_SEEN = tutorial_seen"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "ui_prefs.gd —— 界面偏好（跟玩法进度无关的小开关）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 87,
+      "methods": [
+        {
+          "name": "load_prefs",
+          "signature": "static func load_prefs() -> Dictionary"
+        },
+        {
+          "name": "save_prefs",
+          "signature": "static func save_prefs(data: Dictionary) -> bool"
+        },
+        {
+          "name": "has_seen_tutorial",
+          "signature": "static func has_seen_tutorial() -> bool"
+        },
+        {
+          "name": "mark_tutorial_seen",
+          "signature": "static func mark_tutorial_seen() -> bool"
+        },
+        {
+          "name": "erase",
+          "signature": "static func erase() -> bool"
+        }
+      ],
+      "path": "res://scripts/data/ui_prefs.gd",
+      "private_methods": 0,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "DEFAULT_CASE_ID = 1",
+        "DATA_DIR = res://data/deduction",
+        "CLUE_DIR = res://data/clues",
+        "SCENARIO_DIR = res://data/scenarios",
+        "DEFAULT_LOOP_SECONDS = 360",
+        "SEVERITY_CORE = 核心",
+        "SEVERITY_MINOR = 次要",
+        "SEVERITIES = [\"核心\", \"次要\"]",
+        "PREFIX_CONFLICT = ⚠ 对不上：",
+        "PREFIX_RESOLVED = ✓ 已收束：",
+        "PREFIX_CORE = ★ ",
+        "PREFIX_PLAIN = · ",
+        "PREFIX_NEARLY = …差 "
+      ],
+      "depends_on_autoloads": [],
+      "doc": "deduction_board.gd —— 推演板与矛盾高亮（M1 第 ④ 步 / Entities）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 1221,
+      "methods": [
+        {
+          "name": "configure",
+          "signature": "func configure(case_id: int = …) -> bool"
+        },
+        {
+          "name": "configure_with_rules",
+          "signature": "func configure_with_rules(data: Dictionary, options: Dictionary = …) -> bool"
+        },
+        {
+          "name": "is_configured",
+          "signature": "func is_configured() -> bool"
+        },
+        {
+          "name": "is_ok",
+          "signature": "func is_ok() -> bool"
+        },
+        {
+          "name": "get_case_id",
+          "signature": "func get_case_id() -> int"
+        },
+        {
+          "name": "get_source",
+          "signature": "func get_source() -> String"
+        },
+        {
+          "name": "set_memory_manager",
+          "signature": "func set_memory_manager(memory: Node) -> void"
+        },
+        {
+          "name": "get_memory_manager",
+          "signature": "func get_memory_manager() -> Node"
+        },
+        {
+          "name": "set_owned_clues",
+          "signature": "func set_owned_clues(clue_ids: Array) -> void"
+        },
+        {
+          "name": "get_owned_clues",
+          "signature": "func get_owned_clues() -> Array[String]"
+        },
+        {
+          "name": "refresh",
+          "signature": "func refresh() -> void"
+        },
+        {
+          "name": "reset",
+          "signature": "func reset() -> void"
+        },
+        {
+          "name": "owned_cards",
+          "signature": "func owned_cards() -> Array[String]"
+        },
+        {
+          "name": "unlocked_deductions",
+          "signature": "func unlocked_deductions() -> Array[Dictionary]"
+        },
+        {
+          "name": "locked_deductions",
+          "signature": "func locked_deductions() -> Array[Dictionary]"
+        },
+        {
+          "name": "nearly_locked",
+          "signature": "func nearly_locked() -> Array[Dictionary]"
+        },
+        {
+          "name": "ready_conflicts",
+          "signature": "func ready_conflicts() -> Array[Dictionary]"
+        },
+        {
+          "name": "pending_conflicts",
+          "signature": "func pending_conflicts() -> Array[Dictionary]"
+        },
+        {
+          "name": "get_deduction",
+          "signature": "func get_deduction(deduction_id: String) -> Dictionary"
+        },
+        {
+          "name": "has_deduction",
+          "signature": "func has_deduction(deduction_id: String) -> bool"
+        },
+        {
+          "name": "get_conflict",
+          "signature": "func get_conflict(conflict_id: String) -> Dictionary"
+        },
+        {
+          "name": "has_conflict",
+          "signature": "func has_conflict(conflict_id: String) -> bool"
+        },
+        {
+          "name": "deduction_ids",
+          "signature": "func deduction_ids() -> Array[String]"
+        },
+        {
+          "name": "conflict_ids",
+          "signature": "func conflict_ids() -> Array[String]"
+        },
+        {
+          "name": "card_name",
+          "signature": "func card_name(clue_id: String) -> String"
+        },
+        {
+          "name": "card_chain",
+          "signature": "func card_chain(clue_id: String) -> String"
+        },
+        {
+          "name": "npc_name",
+          "signature": "func npc_name(npc_id: String) -> String"
+        },
+        {
+          "name": "is_deduction_unlocked",
+          "signature": "func is_deduction_unlocked(deduction_id: String) -> bool"
+        },
+        {
+          "name": "is_conflict_ready",
+          "signature": "func is_conflict_ready(conflict_id: String) -> bool"
+        },
+        {
+          "name": "total_deduction_count",
+          "signature": "func total_deduction_count() -> int"
+        },
+        {
+          "name": "total_conflict_count",
+          "signature": "func total_conflict_count() -> int"
+        },
+        {
+          "name": "total_stuck_hint_count",
+          "signature": "func total_stuck_hint_count() -> int"
+        },
+        {
+          "name": "total_clue_count",
+          "signature": "func total_clue_count() -> int"
+        },
+        {
+          "name": "stuck_hint",
+          "signature": "func stuck_hint(loops_without_progress: int, loop_index: int = …) -> Dictionary"
+        },
+        {
+          "name": "describe",
+          "signature": "func describe() -> String"
+        },
+        {
+          "name": "describe_conflict",
+          "signature": "func describe_conflict(conflict_id: String) -> String"
+        },
+        {
+          "name": "board_lines",
+          "signature": "func board_lines(max_lines: int = …) -> Array[String]"
+        },
+        {
+          "name": "get_errors",
+          "signature": "func get_errors() -> Array[String]"
+        },
+        {
+          "name": "get_warnings",
+          "signature": "func get_warnings() -> Array[String]"
+        },
+        {
+          "name": "error_summary",
+          "signature": "func error_summary() -> String"
+        },
+        {
+          "name": "get_state",
+          "signature": "func get_state() -> Dictionary"
+        }
+      ],
+      "path": "res://scripts/entities/deduction_board.gd",
+      "private_methods": 49,
+      "role": "module",
+      "signals": [
+        {
+          "args": "unlocked_count: int, ready_conflict_count: int",
+          "name": "board_changed"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "ClueStore = preload(res://scripts/data/clue_store.gd)",
+        "DEFAULT_MAX_VALUE = 100",
+        "DRAIN_PER_LOOP_RESET = 8",
+        "DRAIN_PER_SECOND = 0.02",
+        "RESTORE_PER_CASE_RESOLVED = 25",
+        "RECOVER_PER_REAL_MINUTE = 1",
+        "LOOP_MANAGER_PATH = /root/TimeLoopManager"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "heart_lamp.gd —— 心灯（玩法层组件 / Entities）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 556,
+      "methods": [
+        {
+          "name": "set_memory_manager",
+          "signature": "func set_memory_manager(memory: Node) -> void"
+        },
+        {
+          "name": "get_memory_manager",
+          "signature": "func get_memory_manager() -> Node"
+        },
+        {
+          "name": "set_store_enabled",
+          "signature": "func set_store_enabled(enabled: bool) -> void"
+        },
+        {
+          "name": "is_store_enabled",
+          "signature": "func is_store_enabled() -> bool"
+        },
+        {
+          "name": "get_value",
+          "signature": "func get_value() -> int"
+        },
+        {
+          "name": "get_max_value",
+          "signature": "func get_max_value() -> int"
+        },
+        {
+          "name": "is_extinguished",
+          "signature": "func is_extinguished() -> bool"
+        },
+        {
+          "name": "get_extinguish_count",
+          "signature": "func get_extinguish_count() -> int"
+        },
+        {
+          "name": "is_in_loop",
+          "signature": "func is_in_loop() -> bool"
+        },
+        {
+          "name": "get_available_clues",
+          "signature": "func get_available_clues() -> Array[String]"
+        },
+        {
+          "name": "get_forgotten_clues",
+          "signature": "func get_forgotten_clues() -> Array[String]"
+        },
+        {
+          "name": "set_max_value",
+          "signature": "func set_max_value(value: int) -> void"
+        },
+        {
+          "name": "set_value",
+          "signature": "func set_value(value: int, allow_extinguish: bool = …) -> void"
+        },
+        {
+          "name": "set_in_loop",
+          "signature": "func set_in_loop(value: bool) -> void"
+        },
+        {
+          "name": "reset_for_new_loop",
+          "signature": "func reset_for_new_loop() -> void"
+        },
+        {
+          "name": "tick",
+          "signature": "func tick(delta: float) -> void"
+        },
+        {
+          "name": "drain",
+          "signature": "func drain(amount: int) -> void"
+        },
+        {
+          "name": "restore",
+          "signature": "func restore(amount: int) -> void"
+        },
+        {
+          "name": "resolve_case",
+          "signature": "func resolve_case() -> void"
+        },
+        {
+          "name": "add_clue",
+          "signature": "func add_clue(clue_id: String, source_loop: int = …) -> bool"
+        },
+        {
+          "name": "restore_from_store",
+          "signature": "func restore_from_store(source_loop: int = …) -> int"
+        },
+        {
+          "name": "apply_offline_recovery",
+          "signature": "func apply_offline_recovery(now_unix: int = …) -> int"
+        },
+        {
+          "name": "get_last_offline_recovery",
+          "signature": "func get_last_offline_recovery() -> int"
+        }
+      ],
+      "path": "res://scripts/entities/heart_lamp.gd",
+      "private_methods": 15,
+      "role": "module",
+      "signals": [
+        {
+          "args": "value: int, max_value: int",
+          "name": "heart_lamp_changed"
+        },
+        {
+          "args": "lost_clue_id: String",
+          "name": "heart_lamp_extinguished"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "MODE_GROW = grow",
+        "MODE_SHRINK = shrink",
+        "LOOP_MANAGER_PATH = /root/TimeLoopManager",
+        "LOOP_MANAGER_NAME = TimeLoopManager"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "loop_mutation.gd —— 世界状态递进（玩法层组件 / Entities）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 659,
+      "methods": [
+        {
+          "name": "subscribe_loop_manager",
+          "signature": "func subscribe_loop_manager() -> bool"
+        },
+        {
+          "name": "unsubscribe_loop_manager",
+          "signature": "func unsubscribe_loop_manager() -> void"
+        },
+        {
+          "name": "on_loop_reset",
+          "signature": "func on_loop_reset() -> void"
+        },
+        {
+          "name": "on_loop_started",
+          "signature": "func on_loop_started(loop_index: int) -> void"
+        },
+        {
+          "name": "configure",
+          "signature": "func configure(case_data) -> void"
+        },
+        {
+          "name": "set_memory_manager",
+          "signature": "func set_memory_manager(memory: Node) -> void"
+        },
+        {
+          "name": "get_memory_manager",
+          "signature": "func get_memory_manager() -> Node"
+        },
+        {
+          "name": "set_loop_index",
+          "signature": "func set_loop_index(loop_index: int) -> void"
+        },
+        {
+          "name": "apply_loop",
+          "signature": "func apply_loop(loop_index: int) -> void"
+        },
+        {
+          "name": "reset",
+          "signature": "func reset() -> void"
+        },
+        {
+          "name": "is_configured",
+          "signature": "func is_configured() -> bool"
+        },
+        {
+          "name": "is_ok",
+          "signature": "func is_ok() -> bool"
+        },
+        {
+          "name": "get_mode",
+          "signature": "func get_mode() -> String"
+        },
+        {
+          "name": "get_level",
+          "signature": "func get_level() -> int"
+        },
+        {
+          "name": "get_loop_index",
+          "signature": "func get_loop_index() -> int"
+        },
+        {
+          "name": "get_loop_number",
+          "signature": "func get_loop_number() -> int"
+        },
+        {
+          "name": "get_max_level",
+          "signature": "func get_max_level() -> int"
+        },
+        {
+          "name": "get_note",
+          "signature": "func get_note() -> String"
+        },
+        {
+          "name": "get_affected_rooms",
+          "signature": "func get_affected_rooms() -> Array[String]"
+        },
+        {
+          "name": "is_affected",
+          "signature": "func is_affected(room: String) -> bool"
+        },
+        {
+          "name": "base_count",
+          "signature": "func base_count(room: String) -> int"
+        },
+        {
+          "name": "entity_count",
+          "signature": "func entity_count(room: String) -> int"
+        },
+        {
+          "name": "total_entity_count",
+          "signature": "func total_entity_count() -> int"
+        },
+        {
+          "name": "list_entities",
+          "signature": "func list_entities(room: String) -> Array[String]"
+        },
+        {
+          "name": "describe",
+          "signature": "func describe() -> String"
+        },
+        {
+          "name": "get_state",
+          "signature": "func get_state() -> Dictionary"
+        },
+        {
+          "name": "get_errors",
+          "signature": "func get_errors() -> Array[String]"
+        },
+        {
+          "name": "get_warnings",
+          "signature": "func get_warnings() -> Array[String]"
+        },
+        {
+          "name": "error_summary",
+          "signature": "func error_summary() -> String"
+        }
+      ],
+      "path": "res://scripts/entities/loop_mutation.gd",
+      "private_methods": 15,
+      "role": "module",
+      "signals": [
+        {
+          "args": "loop_index: int, level: int",
+          "name": "loop_mutation_changed"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "MEMORY_DIR = res://data/npc_memory",
+        "CLUE_DIR = res://data/clues",
+        "DIALOGUE_DIR = res://data/dialogues",
+        "LOOP_MANAGER_PATH = /root/TimeLoopManager",
+        "LOOP_MANAGER_NAME = TimeLoopManager",
+        "DEFAULT_CASE_ID = 1",
+        "EFFECT_KEYS = [\"extra_dialogue_id\", \"reveal_clue_id\", \"note\"]"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "npc_memory.gd —— NPC 跨轮记忆（玩法层组件 / Entities）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 959,
+      "methods": [
+        {
+          "name": "subscribe_loop_manager",
+          "signature": "func subscribe_loop_manager() -> bool"
+        },
+        {
+          "name": "unsubscribe_loop_manager",
+          "signature": "func unsubscribe_loop_manager() -> void"
+        },
+        {
+          "name": "on_loop_reset",
+          "signature": "func on_loop_reset() -> void"
+        },
+        {
+          "name": "on_loop_started",
+          "signature": "func on_loop_started(loop_index: int) -> void"
+        },
+        {
+          "name": "configure",
+          "signature": "func configure(case_id: int = …) -> void"
+        },
+        {
+          "name": "configure_with_rules",
+          "signature": "func configure_with_rules(rules: Dictionary, options: Dictionary = …) -> void"
+        },
+        {
+          "name": "set_memory_manager",
+          "signature": "func set_memory_manager(memory: Node) -> void"
+        },
+        {
+          "name": "get_memory_manager",
+          "signature": "func get_memory_manager() -> Node"
+        },
+        {
+          "name": "set_known_npcs",
+          "signature": "func set_known_npcs(npc_ids: Array) -> void"
+        },
+        {
+          "name": "set_loop_index",
+          "signature": "func set_loop_index(loop_index: int) -> int"
+        },
+        {
+          "name": "apply_loop",
+          "signature": "func apply_loop(loop_index: int) -> int"
+        },
+        {
+          "name": "refresh",
+          "signature": "func refresh() -> int"
+        },
+        {
+          "name": "reset",
+          "signature": "func reset() -> void"
+        },
+        {
+          "name": "is_configured",
+          "signature": "func is_configured() -> bool"
+        },
+        {
+          "name": "is_ok",
+          "signature": "func is_ok() -> bool"
+        },
+        {
+          "name": "get_case_id",
+          "signature": "func get_case_id() -> int"
+        },
+        {
+          "name": "get_source",
+          "signature": "func get_source() -> String"
+        },
+        {
+          "name": "get_loop_index",
+          "signature": "func get_loop_index() -> int"
+        },
+        {
+          "name": "get_loop_number",
+          "signature": "func get_loop_number() -> int"
+        },
+        {
+          "name": "get_stage",
+          "signature": "func get_stage(npc_id: String) -> int"
+        },
+        {
+          "name": "get_max_stage",
+          "signature": "func get_max_stage(npc_id: String) -> int"
+        },
+        {
+          "name": "get_effects",
+          "signature": "func get_effects(npc_id: String) -> Dictionary"
+        },
+        {
+          "name": "list_changed_npcs",
+          "signature": "func list_changed_npcs() -> Array[String]"
+        },
+        {
+          "name": "get_reveal_clue_ids",
+          "signature": "func get_reveal_clue_ids() -> Array[String]"
+        },
+        {
+          "name": "describe",
+          "signature": "func describe(npc_id: String) -> String"
+        },
+        {
+          "name": "get_npc_ids",
+          "signature": "func get_npc_ids() -> Array[String]"
+        },
+        {
+          "name": "get_display_name",
+          "signature": "func get_display_name(npc_id: String) -> String"
+        },
+        {
+          "name": "has_rules",
+          "signature": "func has_rules(npc_id: String) -> bool"
+        },
+        {
+          "name": "total_rule_count",
+          "signature": "func total_rule_count() -> int"
+        },
+        {
+          "name": "is_clue_known",
+          "signature": "func is_clue_known(clue_id: String) -> bool"
+        },
+        {
+          "name": "get_clue_registry_size",
+          "signature": "func get_clue_registry_size() -> int"
+        },
+        {
+          "name": "get_state",
+          "signature": "func get_state() -> Dictionary"
+        },
+        {
+          "name": "get_errors",
+          "signature": "func get_errors() -> Array[String]"
+        },
+        {
+          "name": "get_warnings",
+          "signature": "func get_warnings() -> Array[String]"
+        },
+        {
+          "name": "error_summary",
+          "signature": "func error_summary() -> String"
+        }
+      ],
+      "path": "res://scripts/entities/npc_memory.gd",
+      "private_methods": 22,
+      "role": "module",
+      "signals": [
+        {
+          "args": "npc_id: String, stage: int, max_stage: int",
+          "name": "npc_memory_stage_changed"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "ARRIVE_EPSILON_RATIO = 0.000000001"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "player_travel.gd —— 玩家走位状态机（实体层；不引用任何 Autoload）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 268,
+      "methods": [
+        {
+          "name": "create",
+          "signature": "static func create(map, start_room: String = …) -> void"
+        },
+        {
+          "name": "get_room",
+          "signature": "func get_room() -> String"
+        },
+        {
+          "name": "get_map",
+          "signature": "func get_map() -> void"
+        },
+        {
+          "name": "is_map_loaded",
+          "signature": "func is_map_loaded() -> bool"
+        },
+        {
+          "name": "can_go",
+          "signature": "func can_go(room: String) -> bool"
+        },
+        {
+          "name": "get_route_to",
+          "signature": "func get_route_to(room: String) -> Array[String]"
+        },
+        {
+          "name": "get_travel_seconds_to",
+          "signature": "func get_travel_seconds_to(room: String) -> int"
+        },
+        {
+          "name": "is_moving",
+          "signature": "func is_moving() -> bool"
+        },
+        {
+          "name": "get_target_room",
+          "signature": "func get_target_room() -> String"
+        },
+        {
+          "name": "get_from_room",
+          "signature": "func get_from_room() -> String"
+        },
+        {
+          "name": "get_travel_seconds",
+          "signature": "func get_travel_seconds() -> int"
+        },
+        {
+          "name": "get_arrive_epsilon",
+          "signature": "func get_arrive_epsilon() -> float"
+        },
+        {
+          "name": "get_remaining_seconds",
+          "signature": "func get_remaining_seconds() -> int"
+        },
+        {
+          "name": "get_elapsed_for_debug",
+          "signature": "func get_elapsed_for_debug() -> float"
+        },
+        {
+          "name": "get_total_travelled_seconds",
+          "signature": "func get_total_travelled_seconds() -> int"
+        },
+        {
+          "name": "get_move_count",
+          "signature": "func get_move_count() -> int"
+        },
+        {
+          "name": "set_room",
+          "signature": "func set_room(room: String) -> bool"
+        },
+        {
+          "name": "start_move",
+          "signature": "func start_move(room: String) -> int"
+        },
+        {
+          "name": "tick",
+          "signature": "func tick(delta: float) -> bool"
+        },
+        {
+          "name": "cancel_move",
+          "signature": "func cancel_move() -> bool"
+        },
+        {
+          "name": "reset_to",
+          "signature": "func reset_to(room: String) -> bool"
+        },
+        {
+          "name": "get_last_arrived_room",
+          "signature": "func get_last_arrived_room() -> String"
+        }
+      ],
+      "path": "res://scripts/entities/player_travel.gd",
+      "private_methods": 4,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "Node",
+      "class_name": "",
+      "constants": [
+        "RuneLoader = preload(res://scripts/data/rune_loader.gd)",
+        "DEFAULT_CASE_ID = 1",
+        "STATE_IDLE = idle",
+        "STATE_STEP = step",
+        "STATE_DRAWING = drawing",
+        "STATE_DONE = done",
+        "STATUS_OK = ok",
+        "STATUS_NEAR_MISS = near_miss",
+        "STATUS_WRONG = wrong",
+        "WRONG_HINT = 这一笔对不上原石：笔顺或方向不对。可以退一笔重描。",
+        "LOOP_MANAGER_PATH = /root/TimeLoopManager",
+        "LOOP_MANAGER_NAME = TimeLoopManager"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "scripts/entities/rune_input.gd —— M1 第 ⑤ 步：辨笔画符（画符输入）的**输入状态机**",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 853,
+      "methods": [
+        {
+          "name": "configure",
+          "signature": "func configure(case_id: int = …) -> bool"
+        },
+        {
+          "name": "configure_with_table",
+          "signature": "func configure_with_table(table, options: Dictionary = …) -> bool"
+        },
+        {
+          "name": "is_configured",
+          "signature": "func is_configured() -> bool"
+        },
+        {
+          "name": "is_ok",
+          "signature": "func is_ok() -> bool"
+        },
+        {
+          "name": "get_table",
+          "signature": "func get_table() -> Variant"
+        },
+        {
+          "name": "get_errors",
+          "signature": "func get_errors() -> Array[String]"
+        },
+        {
+          "name": "get_warnings",
+          "signature": "func get_warnings() -> Array[String]"
+        },
+        {
+          "name": "error_summary",
+          "signature": "func error_summary() -> String"
+        },
+        {
+          "name": "set_memory_manager",
+          "signature": "func set_memory_manager(memory: Node) -> void"
+        },
+        {
+          "name": "get_memory_manager",
+          "signature": "func get_memory_manager() -> Node"
+        },
+        {
+          "name": "set_owned_clues",
+          "signature": "func set_owned_clues(clue_ids: Array) -> void"
+        },
+        {
+          "name": "get_owned_clues",
+          "signature": "func get_owned_clues() -> Array[String]"
+        },
+        {
+          "name": "set_room",
+          "signature": "func set_room(room_id: String) -> void"
+        },
+        {
+          "name": "get_room",
+          "signature": "func get_room() -> String"
+        },
+        {
+          "name": "set_loop_index",
+          "signature": "func set_loop_index(index: int) -> void"
+        },
+        {
+          "name": "get_loop_index",
+          "signature": "func get_loop_index() -> int"
+        },
+        {
+          "name": "can_start",
+          "signature": "func can_start(rune_id: String = …) -> bool"
+        },
+        {
+          "name": "start_rune",
+          "signature": "func start_rune(rune_id: String = …) -> bool"
+        },
+        {
+          "name": "is_running",
+          "signature": "func is_running() -> bool"
+        },
+        {
+          "name": "get_state",
+          "signature": "func get_state() -> String"
+        },
+        {
+          "name": "get_current_rune_id",
+          "signature": "func get_current_rune_id() -> String"
+        },
+        {
+          "name": "get_current_step",
+          "signature": "func get_current_step() -> Variant"
+        },
+        {
+          "name": "get_step_index",
+          "signature": "func get_step_index() -> int"
+        },
+        {
+          "name": "get_step_count",
+          "signature": "func get_step_count() -> int"
+        },
+        {
+          "name": "begin_stroke",
+          "signature": "func begin_stroke() -> void"
+        },
+        {
+          "name": "feed_token",
+          "signature": "func feed_token(token: String) -> bool"
+        },
+        {
+          "name": "undo_token",
+          "signature": "func undo_token() -> bool"
+        },
+        {
+          "name": "current_tokens",
+          "signature": "func current_tokens() -> Array[String]"
+        },
+        {
+          "name": "current_stroke_index",
+          "signature": "func current_stroke_index() -> int"
+        },
+        {
+          "name": "drawn_strokes",
+          "signature": "func drawn_strokes() -> Array"
+        },
+        {
+          "name": "undo_stroke",
+          "signature": "func undo_stroke() -> bool"
+        },
+        {
+          "name": "commit_stroke",
+          "signature": "func commit_stroke() -> Dictionary"
+        },
+        {
+          "name": "choose_option",
+          "signature": "func choose_option(option_id: String) -> Dictionary"
+        },
+        {
+          "name": "advance",
+          "signature": "func advance() -> bool"
+        },
+        {
+          "name": "is_completed",
+          "signature": "func is_completed() -> bool"
+        },
+        {
+          "name": "completed_rune_id",
+          "signature": "func completed_rune_id() -> String"
+        },
+        {
+          "name": "fail_rune",
+          "signature": "func fail_rune(reason: String = …) -> bool"
+        },
+        {
+          "name": "reset",
+          "signature": "func reset() -> void"
+        },
+        {
+          "name": "get_last_message",
+          "signature": "func get_last_message() -> String"
+        },
+        {
+          "name": "describe",
+          "signature": "func describe() -> String"
+        },
+        {
+          "name": "describe_step",
+          "signature": "func describe_step() -> String"
+        },
+        {
+          "name": "prompt_lines",
+          "signature": "func prompt_lines(max_lines: int = …) -> Array[String]"
+        },
+        {
+          "name": "get_state_snapshot",
+          "signature": "func get_state_snapshot() -> Dictionary"
+        },
+        {
+          "name": "is_subscribed",
+          "signature": "func is_subscribed() -> bool"
+        }
+      ],
+      "path": "res://scripts/entities/rune_input.gd",
+      "private_methods": 24,
+      "role": "module",
+      "signals": [
+        {
+          "args": "state: String",
+          "name": "rune_changed"
+        },
+        {
+          "args": "step_id: String, step_index: int, total: int",
+          "name": "rune_step_changed"
+        },
+        {
+          "args": "stroke_index: int, tokens: Array",
+          "name": "rune_stroke_drawn"
+        },
+        {
+          "args": "rune_id: String",
+          "name": "rune_completed"
+        },
+        {
+          "args": "rune_id: String, reason: String",
+          "name": "rune_failed"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "Control",
+      "class_name": "",
+      "constants": [
+        "UIPrefs = preload(res://scripts/data/ui_prefs.gd)",
+        "TUTORIAL_SECONDS = 30.0",
+        "PANEL_WIDTH_RATIO = 0.52",
+        "PANEL_MIN_WIDTH = 420.0",
+        "PANEL_MAX_WIDTH = 700.0",
+        "F_HERO = 22",
+        "F_TITLE = 16",
+        "F_BODY = 14",
+        "F_SMALL = 12",
+        "C_TEXT（复合值）",
+        "C_DIM（复合值）",
+        "C_WARM（复合值）",
+        "C_ACCENT（复合值）",
+        "C_ACCENT_EDGE（复合值）",
+        "C_PANEL_BG（复合值）",
+        "C_PANEL_EDGE（复合值）",
+        "C_BLOCK（复合值）",
+        "C_KEY_BG（复合值）",
+        "C_KEY_EDGE（复合值）"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "overlay_ui.gd —— 覆盖层：新手引导弹窗 + 结案结算弹窗（Phase 2 / Phase 3）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 465,
+      "methods": [
+        {
+          "name": "open_tutorial",
+          "signature": "func open_tutorial() -> void"
+        },
+        {
+          "name": "close_tutorial",
+          "signature": "func close_tutorial() -> void"
+        },
+        {
+          "name": "is_tutorial_open",
+          "signature": "func is_tutorial_open() -> bool"
+        },
+        {
+          "name": "tutorial_seconds_left",
+          "signature": "func tutorial_seconds_left() -> float"
+        },
+        {
+          "name": "open_settlement",
+          "signature": "func open_settlement(state: Dictionary = …) -> void"
+        },
+        {
+          "name": "close_settlement",
+          "signature": "func close_settlement() -> void"
+        },
+        {
+          "name": "is_settlement_open",
+          "signature": "func is_settlement_open() -> bool"
+        },
+        {
+          "name": "debug_info",
+          "signature": "func debug_info() -> Dictionary"
+        }
+      ],
+      "path": "res://scripts/ui/overlay_ui.gd",
+      "private_methods": 25,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "Control",
+      "class_name": "",
+      "constants": [
+        "MAP_PATH = res://data/maps/case_01_map.json",
+        "MARGIN = 12.0",
+        "TOP_H = 74.0",
+        "BOTTOM_H = 104.0",
+        "PANEL_MIN_W = 300.0",
+        "PANEL_MAX_W = 360.0",
+        "MIN_GAP = 120.0",
+        "CELL_MIN_W = 128.0",
+        "CELL_MIN_H = 92.0",
+        "PLATE_H = 30.0",
+        "CHIP_H = 18.0",
+        "CHIP_GAP = 6.0",
+        "FONT_PATH = res://assets/fonts/NotoSansSC-subset.ttf",
+        "F_TINY = 11",
+        "F_SMALL = 12",
+        "F_BODY = 14",
+        "F_TITLE = 16",
+        "F_HERO = 22",
+        "C_BG（复合值）",
+        "C_INK（复合值）",
+        "C_TEXT（复合值）",
+        "C_DIM（复合值）",
+        "C_FAINT（复合值）",
+        "C_GOLD（复合值）",
+        "C_LAMP（复合值）",
+        "C_BAD（复合值）",
+        "C_OK（复合值）",
+        "C_STONE（复合值）",
+        "C_NPC = [(0.62, 0.78, 0.92, 1.0), (0.86, 0.7, 0.55, 1.0), (0.72, …"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "PlayView —— M2 画面层（v2：自适应网格布局）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 1102,
+      "methods": [
+        {
+          "name": "debug_info",
+          "signature": "func debug_info() -> Dictionary"
+        }
+      ],
+      "path": "res://scripts/ui/play_view.gd",
+      "private_methods": 49,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "Control",
+      "class_name": "",
+      "constants": [
+        "CaseLoader = preload(res://scripts/data/case_loader.gd)",
+        "HeartLamp = preload(res://scripts/entities/heart_lamp.gd)",
+        "DialogueLoader = preload(res://scripts/data/dialogue_loader.gd)",
+        "LoopMutation = preload(res://scripts/entities/loop_mutation.gd)",
+        "NpcMemory = preload(res://scripts/entities/npc_memory.gd)",
+        "MapLoader = preload(res://scripts/data/map_loader.gd)",
+        "PlayerTravel = preload(res://scripts/entities/player_travel.gd)",
+        "DeductionBoard = preload(res://scripts/entities/deduction_board.gd)",
+        "RuneLoader = preload(res://scripts/data/rune_loader.gd)",
+        "RuneInput = preload(res://scripts/entities/rune_input.gd)",
+        "ClueStore = preload(res://scripts/data/clue_store.gd)",
+        "DEFAULT_DURATION = 420.0",
+        "SCALE_STEPS = [1.0, 10.0, 60.0]",
+        "LOG_LINES = 6",
+        "FAST_SCALE = 60.0"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager",
+        "TimeLoopManager"
+      ],
+      "doc": "slice_hud.gd —— M0 可玩纵切片的表现层（临时 UI，正式 UI 到位后整块替换）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 1848,
+      "methods": [
+        {
+          "name": "request_option",
+          "signature": "func request_option(index: int) -> void"
+        },
+        {
+          "name": "present_state",
+          "signature": "func present_state() -> Dictionary"
+        },
+        {
+          "name": "request_travel",
+          "signature": "func request_travel(room_id: String) -> void"
+        },
+        {
+          "name": "request_talk",
+          "signature": "func request_talk() -> void"
+        },
+        {
+          "name": "request_board",
+          "signature": "func request_board() -> void"
+        },
+        {
+          "name": "request_rune",
+          "signature": "func request_rune() -> void"
+        },
+        {
+          "name": "request_reset",
+          "signature": "func request_reset() -> void"
+        },
+        {
+          "name": "request_restart_case",
+          "signature": "func request_restart_case() -> void"
+        },
+        {
+          "name": "set_text_hud_visible",
+          "signature": "func set_text_hud_visible(on: bool) -> void"
+        },
+        {
+          "name": "is_text_hud_visible",
+          "signature": "func is_text_hud_visible() -> bool"
+        }
+      ],
+      "path": "res://scripts/ui/slice_hud.gd",
+      "private_methods": 72,
+      "role": "module",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "Control",
+      "class_name": "",
+      "constants": [
+        "NEXT_SCENE = res://scenes/main.tscn",
+        "C_INK_TOP（复合值）",
+        "C_INK_BOTTOM（复合值）",
+        "C_MIST（复合值）",
+        "C_CINNABAR（复合值）",
+        "C_EDGE（复合值）",
+        "C_EDGE_HOVER（复合值）",
+        "C_EDGE_PRESSED（复合值）",
+        "C_BTN_FILL（复合值）",
+        "C_BTN_FILL_HOVER（复合值）",
+        "C_BTN_FILL_PRESSED（复合值）",
+        "C_TEXT（复合值）",
+        "C_TEXT_HOVER（复合值）",
+        "BLOCK_CENTER_Y_RATIO = 0.44",
+        "FS_TITLE_RATIO = 0.072",
+        "FS_TITLE_MIN = 26",
+        "FS_TITLE_MAX = 76",
+        "FS_SUBTITLE_RATIO = 0.028",
+        "FS_SUBTITLE_MIN = 13",
+        "FS_SUBTITLE_MAX = 32",
+        "FS_HINT_RATIO = 0.017",
+        "FS_HINT_MIN = 11",
+        "FS_HINT_MAX = 20",
+        "FS_BUTTON_RATIO = 0.026",
+        "FS_BUTTON_MIN = 13",
+        "FS_BUTTON_MAX = 30",
+        "GAP_TITLE_TO_SUBTITLE = 0.028",
+        "GAP_SUBTITLE_TO_HINT = 0.013",
+        "GAP_HINT_TO_BUTTON = 0.045",
+        "BUTTON_H_RATIO = 0.07",
+        "BUTTON_W_PAD_RATIO = 0.11",
+        "BUTTON_W_RATIO_MIN = 0.2",
+        "BUTTON_W_RATIO_MAX = 0.42",
+        "BUTTON_CONTENT_MARGIN = 12.0",
+        "LINE_HEIGHT_FALLBACK = 1.45",
+        "BLOOMS = [[0.2, 0.28, 0.36, 0.021], [0.82, 0.2, 0.3, 0.018], [0.68…",
+        "BLOOM_RINGS = 10",
+        "SEAL_TILT_DEG = 7.0",
+        "STREAKS = [[0.145, 0.06, 0.44, 0.045], [0.198, 0.52, 0.95, 0.032], …",
+        "VIGNETTE_LAYERS = 16",
+        "VIGNETTE_BAND_RATIO = 0.016"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "title_scene.gd —— 极简标题界面（M2 表现层：标题页）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 470,
+      "methods": [
+        {
+          "name": "debug_info",
+          "signature": "func debug_info() -> Dictionary"
+        }
+      ],
+      "path": "res://scripts/ui/title_scene.gd",
+      "private_methods": 18,
+      "role": "module",
+      "signals": [
+        {
+          "args": "",
+          "name": "start_requested"
+        }
+      ]
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "CaseLoader = preload(res://scripts/data/case_loader.gd)",
+        "EXPECTED_CHECKS = 35",
+        "VALID_FIXTURE = \n{\n  \"meta\": {\n    \"schema_version\": 1,\n    \"map_id\": \"test_map\",\n    \"case_id\": 1,\n    \"case_title\": \"白鹄不举\",\n    \"loop_duration_seconds\": 360,\n    \"rooms\": [\"hall\", \"cellar\"],\n    \"description\": \"夹具案件\",\n    \"secret\": { \"kind\": \"test\", \"per_loop_mutation\": { \"mode\": \"shrink\" } }\n  },\n  \"npcs\": [\n    {\n      \"npc_id\": \"npc_01_a\",\n      \"display_name\": \"甲\",\n      \"default_room\": \"hall\",\n      \"timeline\": [\n        { \"second\": 0,   \"room\": \"hall\",   \"action\": \"wait\",  \"clue_id\": \"\" },\n        { \"second\": 120, \"room\": \"cellar\", \"action\": \"dig\",   \"clue_id\": \"clue_01_shovel\" }\n      ]\n    },\n    {\n      \"npc_id\": \"npc_01_b\",\n      \"display_name\": \"乙\",\n      \"default_room\": \"cellar\",\n      \"timeline\": [\n        { \"second\": 0,  \"room\": \"cellar\", \"action\": \"hide\", \"clue_id\": \"\" },\n        { \"second\": 60, \"room\": \"hall\",   \"action\": \"talk\", \"clue_id\": \"clue_01_letter\" }\n      ]\n    }\n  ]\n}\n",
+        "SUSPICIOUS_FIXTURE = \n{\n  \"meta\": {\n    \"schema_version\": 1,\n    \"map_id\": \"test_map\",\n    \"case_id\": 2,\n    \"case_title\": \"夹具二\",\n    \"loop_duration_seconds\": 300,\n    \"rooms\": [\"hall\", \"cellar\"]\n  },\n  \"npcs\": [\n    {\n      \"npc_id\": \"npc_02_a\",\n      \"display_name\": \"丙\",\n      \"default_room\": \"hall\",\n      \"timeline\": [\n        { \"second\": 100, \"room\": \"cellar\", \"action\": \"dig\" },\n        { \"second\": 50,  \"room\": \"celar\",  \"action\": \"walk\" }\n      ]\n    }\n  ]\n}\n",
+        "LEGACY_SHAPE_FIXTURE = \n{ \"meta\": { \"map_id\": \"m\", \"case_id\": 3, \"loop_duration_seconds\": 60, \"rooms\": [\"hall\"] },\n  \"npcs\": { \"npc_03_a\": { \"display_name\": \"丁\" } } }\n",
+        "DUPLICATE_SECOND_FIXTURE = \n{ \"meta\": { \"map_id\": \"m\", \"case_id\": 4, \"loop_duration_seconds\": 60, \"rooms\": [\"hall\"] },\n  \"npcs\": [ { \"npc_id\": \"npc_04_a\", \"display_name\": \"戊\", \"default_room\": \"hall\",\n    \"timeline\": [ { \"second\": 10, \"room\": \"hall\" }, { \"second\": 10, \"room\": \"hall\" } ] } ] }\n",
+        "OUT_OF_RANGE_FIXTURE = \n{ \"meta\": { \"map_id\": \"m\", \"case_id\": 5, \"loop_duration_seconds\": 60, \"rooms\": [\"hall\"] },\n  \"npcs\": [ { \"npc_id\": \"npc_05_a\", \"display_name\": \"己\", \"default_room\": \"hall\",\n    \"timeline\": [ { \"second\": 90, \"room\": \"hall\" } ] } ] }\n"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "test_case_loader.gd —— case_loader.gd 的离线自检（不依赖 data/scenarios 里有没有真文件）",
+      "expected_checks": 35,
+      "inner_classes": [],
+      "lines": 226,
+      "methods": [],
+      "path": "res://tests/test_case_loader.gd",
+      "private_methods": 7,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "DeductionBoard = preload(res://scripts/entities/deduction_board.gd)",
+        "DEDUCTION_DATA = res://data/deduction/case_01_deduction.json",
+        "EXPECTED_CHECKS = 263",
+        "CLOSING_CLUES = [\"clue_01_four_in_three\", \"clue_01_half_stroke_cun\", \"clu…",
+        "ALL_CLUES = [\"clue_01_four_in_three\", \"clue_01_two_hands\", \"clue_01_h…"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "tests/test_deduction.gd —— M1 第 ④ 步：推演板与矛盾高亮",
+      "expected_checks": 263,
+      "inner_classes": [
+        "FakeMemory",
+        "FakeLamp"
+      ],
+      "lines": 796,
+      "methods": [],
+      "path": "res://tests/test_deduction.gd",
+      "private_methods": 20,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "DialogueLoader = preload(res://scripts/data/dialogue_loader.gd)",
+        "EXPECTED_CHECKS = 114",
+        "FIXTURE_NPCS（复合值）",
+        "FIXTURE_CLUES = [\"clue_01_knot\", \"clue_01_letter\"]",
+        "VALID_FIXTURE = \n{\n  \"meta\": {\n    \"schema_version\": 1,\n    \"case_id\": 7,\n    \"map_id\": \"test_map\",\n    \"description\": \"夹具对话表\"\n  },\n  \"dialogues\": {\n    \"a_00_hello\": {\n      \"speaker\": \"甲先生\",\n      \"unlock_if\": { \"has_clues\": [], \"loop_min\": 0 },\n      \"lines\": [\"（他把手收进袖子里）你昨天也在这儿。\", \"我数了十九年台阶。\"],\n      \"options\": [\n        { \"text\": \"（先记住他站的是哪一级）\", \"reply\": \"（第七级。他一秒不差。）\", \"goto\": \"\" },\n        { \"text\": \"再往上走一步？\", \"require_loop_min\": 3, \"goto\": \"a_01_up\" }\n      ],\n      \"note\": \"夹具：第一拍\"\n    },\n    \"a_01_up\": {\n      \"speaker\": \"甲先生\",\n      \"unlock_if\": { \"has_clues\": [\"clue_01_knot\"], \"loop_min\": 3 },\n      \"lines\": [\"上面那级是空的。\", \"他数过的地方比别处亮一点。\"],\n      \"options\": [\n        { \"text\": \"（把那道结原样描在本子上）\", \"reply\": \"（双回结：先反手一圈，再回扣一道。）\", \"add_clue\": \"clue_01_knot\", \"goto\": \"\" }\n      ],\n      \"note\": \"夹具：第二拍\"\n    },\n    \"b_00_hide\": {\n      \"speaker\": \"乙姑娘\",\n      \"unlock_if\": { \"has_clues\": [], \"loop_min\": 0 },\n      \"lines\": [\"（她把信压在碗底）\", \"（碗是空的，信也没有署名。）\"],\n      \"options\": [\n        { \"text\": \"（记下碗底压着什么）\", \"goto\": \"\" }\n      ],\n      \"note\": \"夹具：另一名 NPC\"\n    }\n  }\n}\n",
+        "VALID_ANCHORS（复合值）",
+        "SUSPICIOUS_FIXTURE = \n{\n  \"meta\": { \"schema_version\": 1, \"case_id\": 8, \"map_id\": \"test_map\" },\n  \"dialogues\": {\n    \"c_00_late\": {\n      \"speaker\": \"甲先生\",\n      \"lines\": [\"这一条排在前面，但锚点在后。\"],\n      \"options\": [ { \"text\": \"（记下来）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：锚点 100\"\n    },\n    \"c_01_early\": {\n      \"speaker\": \"甲先生\",\n      \"lines\": [\"这一条锚点在前，却排在后面。\"],\n      \"options\": [ { \"text\": \"（记下来）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：锚点 50\"\n    },\n    \"c_02_nospeaker\": {\n      \"lines\": [\"谁在说这句？\"],\n      \"options\": [ { \"text\": \"（不知道是谁说的）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：缺 speaker\"\n    },\n    \"c_03_emptylines\": {\n      \"speaker\": \"甲先生\",\n      \"lines\": [\"\", \"   \"],\n      \"options\": [ { \"text\": \"（空白台词）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：空文本\"\n    },\n    \"c_04_dangling\": {\n      \"speaker\": \"甲先生\",\n      \"lines\": [\"这一条跳向一个不存在的条目。\"],\n      \"options\": [ { \"text\": \"跟过去\", \"goto\": \"no_such_dialogue\" } ],\n      \"note\": \"夹具：悬空 goto\"\n    },\n    \"c_05_outsider\": {\n      \"speaker\": \"路人甲乙丙\",\n      \"lines\": [\"台词没问题，但说话的人不在本页名册上。\"],\n      \"options\": [ { \"text\": \"（记下来）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：speaker 不在名册\"\n    },\n    \"c_06_badclue\": {\n      \"speaker\": \"甲先生\",\n      \"lines\": [\"这一条给一条没登记的线索。\"],\n      \"options\": [ { \"text\": \"（收下）\", \"add_clue\": \"clue-09-ghost\", \"goto\": \"\" } ],\n      \"note\": \"夹具：clue_id 不合规范\"\n    },\n    \"c_07_shuffled\": {\n      \"speaker\": \"乙姑娘\",\n      \"lines\": [\"这一条按锚点应该在中间。\"],\n      \"options\": [ { \"text\": \"（记下来）\", \"goto\": \"\" } ],\n      \"note\": \"夹具：锚点 70\"\n    }\n  }\n}\n",
+        "SUSPICIOUS_ANCHORS（复合值）",
+        "NO_META_FIXTURE = \n{ \"dialogues\": { \"d_00\": { \"speaker\": \"甲先生\", \"lines\": [\"缺 meta。\"], \"options\": [] } } }\n",
+        "DIALOGUES_AS_ARRAY_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 9, \"map_id\": \"m\" },\n  \"dialogues\": [ { \"dialogue_id\": \"d_00\", \"lines\": [\"写成了数组。\"] } ] }\n",
+        "EMPTY_ID_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 9, \"map_id\": \"m\" },\n  \"dialogues\": { \"\": { \"speaker\": \"甲先生\", \"lines\": [\"id 是空的。\"], \"options\": [] } } }\n",
+        "DUPLICATE_ID_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 9, \"map_id\": \"m\" },\n  \"dialogues\": {\n    \"d_00\": { \"speaker\": \"甲先生\", \"lines\": [\"第一份。\"], \"options\": [] },\n    \"d_00\": { \"speaker\": \"甲先生\", \"lines\": [\"第二份，同 id。\"], \"options\": [] }\n  } }\n",
+        "NO_LINES_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 9, \"map_id\": \"m\" },\n  \"dialogues\": { \"d_00\": { \"speaker\": \"甲先生\", \"options\": [] } } }\n",
+        "BAD_ENTRY_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 9, \"map_id\": \"m\" },\n  \"dialogues\": { \"d_00\": \"这一条写成了字符串\", \"d_01\": null } }\n",
+        "OUT_OF_RANGE_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 10, \"map_id\": \"m\" },\n  \"dialogues\": { \"d_00\": { \"speaker\": \"甲先生\", \"lines\": [\"这一条锚在 999 秒。\"], \"options\": [] } } }\n",
+        "UNKNOWN_NPC_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 10, \"map_id\": \"m\" },\n  \"dialogues\": { \"d_00\": { \"speaker\": \"npc_99_ghost\", \"lines\": [\"说话的人不在名册上。\"], \"options\": [] } } }\n",
+        "UNKNOWN_CLUE_FIXTURE = \n{ \"meta\": { \"schema_version\": 1, \"case_id\": 10, \"map_id\": \"m\" },\n  \"dialogues\": { \"d_00\": { \"speaker\": \"甲先生\", \"lines\": [\"给一条没登记的线索。\"],\n    \"options\": [ { \"text\": \"（收下）\", \"add_clue\": \"clue_01_knots\", \"goto\": \"\" } ] } } }\n",
+        "REAL_DIALOGUE_PATH = res://data/dialogues/case_01_dialogues.json",
+        "REAL_CLUE_PATH = res://data/clues/case_01_clues.json",
+        "ORPHAN_CLUES = [\"clue_01_double_knot\", \"clue_01_keep_stele_motive\"]"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "test_dialogue.gd —— dialogue_loader.gd 的离线自检（M1 对话层）",
+      "expected_checks": 114,
+      "inner_classes": [],
+      "lines": 513,
+      "methods": [],
+      "path": "res://tests/test_dialogue.gd",
+      "private_methods": 11,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "HeartLamp = preload(res://scripts/entities/heart_lamp.gd)",
+        "ClueStore = preload(res://scripts/data/clue_store.gd)",
+        "MEMORY_SCRIPT = res://scripts/core/persistent_memory_manager.gd",
+        "EXPECTED_CHECKS = 173",
+        "STORE_FILES = [\"user://clue_store.json\", \"user://clue_store.json.tmp\", …"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager"
+      ],
+      "doc": "test_heart_lamp.gd —— 心灯 + 线索双档轮换落盘 测试（Headless，不需要打开编辑器）",
+      "expected_checks": 173,
+      "inner_classes": [],
+      "lines": 797,
+      "methods": [],
+      "path": "res://tests/test_heart_lamp.gd",
+      "private_methods": 28,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "LoopMutation = preload(res://scripts/entities/loop_mutation.gd)",
+        "NpcMemory = preload(res://scripts/entities/npc_memory.gd)",
+        "CaseLoader = preload(res://scripts/data/case_loader.gd)",
+        "PersistentMemoryManagerScript = preload(res://scripts/core/persistent_memory_manager.gd)",
+        "CASE_PATH = res://data/scenarios/case_01_baihu.json",
+        "MEMORY_PATH = res://data/npc_memory/case_01_memory.json",
+        "EXPECTED_CHECKS = 130"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager",
+        "TimeLoopManager"
+      ],
+      "doc": "测试：NPC 跨轮记忆（npc_memory.gd）+ 世界状态递进（loop_mutation.gd）—— M1 第③步的唯一空白差异位。",
+      "expected_checks": 130,
+      "inner_classes": [],
+      "lines": 572,
+      "methods": [],
+      "path": "res://tests/test_npc_memory.gd",
+      "private_methods": 15,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "TIME_LOOP_SCRIPT = res://scripts/core/time_loop_manager.gd",
+        "MEMORY_SCRIPT = res://scripts/core/persistent_memory_manager.gd",
+        "TimelineParser = preload(res://scripts/data/npc_timeline_parser.gd)",
+        "EXPECTED_CHECKS = 84"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "test_phase1_smoke.gd —— 阶段一冒烟测试（不需要打开编辑器）",
+      "expected_checks": 84,
+      "inner_classes": [],
+      "lines": 372,
+      "methods": [],
+      "path": "res://tests/test_phase1_smoke.gd",
+      "private_methods": 12,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "Loader = preload(res://scripts/data/rune_loader.gd)",
+        "RuneInput = preload(res://scripts/entities/rune_input.gd)",
+        "EXPECTED_CHECKS = 455",
+        "RUNE_ID = huizhao_songbei",
+        "SIX_CLUES = [\"clue_01_four_in_three\", \"clue_01_half_stroke_cun\", \"clu…",
+        "DRAW_STEP = draw_the_reflection",
+        "CHOICE_STEP = no_re_carving",
+        "ROOM = baihutai_bei",
+        "MIN_LOOP = 8",
+        "LOOP_MANAGER_NAME = TimeLoopManager"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "tests/test_runes.gd —— M1 第 ⑤ 步：辨笔画符（画符输入）的自带断言测试",
+      "expected_checks": 455,
+      "inner_classes": [
+        "LoopClock",
+        "FakeMemory",
+        "HasOnly"
+      ],
+      "lines": 1211,
+      "methods": [
+        {
+          "name": "prompt_lines_size",
+          "signature": "func prompt_lines_size(input: Node) -> int"
+        }
+      ],
+      "path": "res://tests/test_runes.gd",
+      "private_methods": 32,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "CaseLoader = preload(res://scripts/data/case_loader.gd)",
+        "ClueStore = preload(res://scripts/data/clue_store.gd)",
+        "UIPrefs = preload(res://scripts/data/ui_prefs.gd)",
+        "HeartLamp = preload(res://scripts/entities/heart_lamp.gd)",
+        "SCENE_PATH = res://scenes/main.tscn",
+        "STORE_PATH = user://clue_store.json",
+        "TMP_PATH = user://clue_store.json.tmp",
+        "STORE_PATHS = [\"user://clue_store.json\", \"user://clue_store.json.tmp\", …",
+        "EXPECTED_CHECKS = 215"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager",
+        "TimeLoopManager"
+      ],
+      "doc": "test_slice_hud.gd —— M0 可玩纵切片的无头试玩",
+      "expected_checks": 215,
+      "inner_classes": [],
+      "lines": 1114,
+      "methods": [],
+      "path": "res://tests/test_slice_hud.gd",
+      "private_methods": 31,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "SCENE_PATH = res://scenes/title_scene.tscn",
+        "SCRIPT_PATH = res://scripts/ui/title_scene.gd",
+        "MAIN_SCENE_PATH = res://scenes/main.tscn",
+        "EXPECTED_CHECKS = 57",
+        "STORE_PATHS = [\"user://clue_store.json\", \"user://clue_store.json.tmp\", …",
+        "LAYOUT_SIZES = [(1280, 720), (1600, 900), (960, 540)]"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager",
+        "TimeLoopManager"
+      ],
+      "doc": "test_title_scene.gd —— 标题界面（scenes/title_scene.tscn）无头测试",
+      "expected_checks": 57,
+      "inner_classes": [],
+      "lines": 513,
+      "methods": [],
+      "path": "res://tests/test_title_scene.gd",
+      "private_methods": 22,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "MapLoader = preload(res://scripts/data/map_loader.gd)",
+        "PlayerTravel = preload(res://scripts/entities/player_travel.gd)",
+        "CaseLoader = preload(res://scripts/data/case_loader.gd)",
+        "EXPECTED_CHECKS = 165",
+        "MAX_COLLECT_PASSES = 8",
+        "VALID_MAP = \n{\n  \"schema_version\": 1,\n  \"case_id\": 1,\n  \"map_id\": \"fixture_map\",\n  \"display_name\": \"夹具地图\",\n  \"rooms\": [\n    { \"room_id\": \"hall\",  \"display_name\": \"厅\", \"exits\": [\n      { \"to\": \"ridge\", \"travel_seconds\": 10 },\n      { \"to\": \"pond\",  \"travel_seconds\": 40 } ] },\n    { \"room_id\": \"ridge\", \"display_name\": \"埂\", \"exits\": [\n      { \"to\": \"hall\",  \"travel_seconds\": 10 },\n      { \"to\": \"pond\",  \"travel_seconds\": 20 } ] },\n    { \"room_id\": \"pond\",  \"display_name\": \"塘\", \"exits\": [\n      { \"to\": \"hall\",  \"travel_seconds\": 40 },\n      { \"to\": \"ridge\", \"travel_seconds\": 20 } ] }\n  ]\n}\n",
+        "DUPLICATE_ROOM_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": 10 } ] },\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": 10 } ] } ] }\n",
+        "UNKNOWN_ROOM_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"hal\", \"travel_seconds\": 10 } ] } ] }\n",
+        "MISSING_EXIT_TO_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"travel_seconds\": 10 } ] } ] }\n",
+        "ZERO_TRAVEL_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": 0 } ] },\n  { \"room_id\": \"pond\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "FRACTIONAL_TRAVEL_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": 2.5 } ] },\n  { \"room_id\": \"pond\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "NEGATIVE_TRAVEL_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": -5 } ] },\n  { \"room_id\": \"pond\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "SELF_LOOP_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "DUPLICATE_EDGE_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [ { \"to\": \"pond\", \"travel_seconds\": 10 },\n                                  { \"to\": \"pond\", \"travel_seconds\": 12 } ] },\n  { \"room_id\": \"pond\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "NO_EXITS_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\", \"rooms\": [\n  { \"room_id\": \"hall\", \"exits\": [] },\n  { \"room_id\": \"pond\", \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] } ] }\n",
+        "MISSING_ROOMS_MAP = \n{ \"schema_version\": 1, \"case_id\": 1, \"map_id\": \"m\" }\n",
+        "WARN_MAP = \n{\n  \"schema_version\": 1,\n  \"case_id\": 1,\n  \"map_id\": \"warn_map\",\n  \"rooms\": [\n    { \"room_id\": \"hall\",  \"exits\": [ { \"to\": \"stub\", \"travel_seconds\": 10 },\n                                     { \"to\": \"far\",  \"travel_seconds\": 200 } ] },\n    { \"room_id\": \"stub\",  \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 10 } ] },\n    { \"room_id\": \"far\",   \"exits\": [ { \"to\": \"hall\", \"travel_seconds\": 200 } ] },\n    { \"room_id\": \"island\", \"exits\": [ { \"to\": \"island2\", \"travel_seconds\": 5 } ] },\n    { \"room_id\": \"island2\", \"exits\": [ { \"to\": \"island\", \"travel_seconds\": 5 } ] }\n  ]\n}\n"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "test_travel.gd —— 走位耗时自检：map_loader + player_travel + 案一真实数据",
+      "expected_checks": 165,
+      "inner_classes": [],
+      "lines": 1069,
+      "methods": [],
+      "path": "res://tests/test_travel.gd",
+      "private_methods": 33,
+      "role": "test",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "ValidateData = preload(res://tools/validate_data.gd)",
+        "Parser = preload(res://scripts/data/npc_timeline_parser.gd)",
+        "SCENARIO_DIR = res://data/scenarios",
+        "DEFAULT_SCENE = res://scenes/main.tscn",
+        "LEGACY_TIMELINE = res://data/npc_timelines.json",
+        "GEN_INDEX_SCRIPT = res://tools/gen_index.gd",
+        "DEFAULT_SIM_SECONDS = 900.0",
+        "SMOKE_TARGET_SECONDS = 3.0",
+        "MAX_PROBLEM_LINES = 10"
+      ],
+      "depends_on_autoloads": [
+        "PersistentMemoryManager",
+        "TimeLoopManager"
+      ],
+      "doc": "tools/cli.gd —— 项目命令行（工具链第 2 步：状态探针）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 528,
+      "methods": [],
+      "path": "res://tools/cli.gd",
+      "private_methods": 16,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "SCAN_ROOTS = [\"res://scripts\", \"res://tools\", \"res://tests\"]",
+        "MD_PATH = res://docs/INDEX.md",
+        "JSON_PATH = res://docs/index.json",
+        "DATA_DIR = res://data",
+        "SCENE_DIR = res://scenes"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "tools/gen_index.gd —— 符号索引生成器（工具链第 1 步）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 658,
+      "methods": [],
+      "path": "res://tools/gen_index.gd",
+      "private_methods": 21,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "SPEC_DEFAULT = res://assets_src/placeholder_manifest.json",
+        "OUT_DIR_DEFAULT = res://assets/placeholder/",
+        "TMP_DIR = user://gen_placeholders_check/",
+        "README_NAME = README.md",
+        "LOG_LIMIT = 18",
+        "DRIFT_LIMIT = 10",
+        "SIZE_MAX = 2048",
+        "BORDER_FACTOR = 0.55",
+        "MARKER_DARK_FACTOR = 0.18",
+        "MARKER_LIGHT_FACTOR = 1.35"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "gen_placeholders.gd —— 占位图生成器：assets_src/placeholder_manifest.json → PNG",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 492,
+      "methods": [],
+      "path": "res://tools/gen_placeholders.gd",
+      "private_methods": 23,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "OUT_DIR_DEFAULT = res://scenes/",
+        "TMP_PATH = user://gen_scene_check.tscn",
+        "LOG_LIMIT = 18",
+        "DRIFT_LIMIT = 10"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "gen_scene.gd —— 场景生成器：场景规格 JSON → .tscn（调用引擎自身的序列化器）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 585,
+      "methods": [],
+      "path": "res://tools/gen_scene.gd",
+      "private_methods": 22,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "SPEC_DEFAULT = res://assets_src/theme.json",
+        "OUT_PATH_DEFAULT = res://theme/default_theme.tres",
+        "TMP_PATH = user://gen_theme_check.tres",
+        "LOG_LIMIT = 18",
+        "DRIFT_LIMIT = 10",
+        "FONT_SIZE_MIN = 1",
+        "FONT_SIZE_MAX = 512"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "gen_theme.gd —— 主题生成器：assets_src/theme.json → theme/default_theme.tres",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 561,
+      "methods": [],
+      "path": "res://tools/gen_theme.gd",
+      "private_methods": 23,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "SceneTree",
+      "class_name": "",
+      "constants": [
+        "DEFAULT_SCENE = res://scenes/main.tscn",
+        "DEFAULT_OUT = res://.shots/main.png",
+        "STORE_PATHS = [\"user://clue_store.json\", \"user://clue_store.json.tmp\", …",
+        "UIPrefs = preload(res://scripts/data/ui_prefs.gd)",
+        "KEY_NAMES（复合值）"
+      ],
+      "depends_on_autoloads": [
+        "TimeLoopManager"
+      ],
+      "doc": "表现层截图工具：用【带窗口】的 Godot 跑，把主场景的渲染结果存成 PNG。",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 227,
+      "methods": [],
+      "path": "res://tools/shot.gd",
+      "private_methods": 7,
+      "role": "tool",
+      "signals": []
+    },
+    {
+      "autoload_name": "",
+      "base": "RefCounted",
+      "class_name": "",
+      "constants": [
+        "Parser = preload(res://scripts/data/npc_timeline_parser.gd)",
+        "MapLoader = preload(res://scripts/data/map_loader.gd)",
+        "SCENARIO_DIR = res://data/scenarios",
+        "CLUE_DIR = res://data/clues",
+        "DIALOGUE_DIR = res://data/dialogues",
+        "DEDUCTION_DIR = res://data/deduction",
+        "RUNE_DIR = res://data/runes",
+        "LEGACY_TIMELINE = res://data/npc_timelines.json",
+        "ROOM_PATTERN = ^[a-z][a-z0-9_]*$",
+        "CLUE_PATTERN = ^(clue|note|sealed)_[a-z0-9]+(_[a-z0-9]+)*$",
+        "CASE_FILE_PATTERN = ^case_(\\d{2})_[a-z0-9_]+\\.json$",
+        "MIN_LOOP_SECONDS = 60",
+        "MAX_LOOP_SECONDS = 3600"
+      ],
+      "depends_on_autoloads": [],
+      "doc": "数据 schema + 设计不变量校验器（工具链第 4 步）",
+      "expected_checks": 0,
+      "inner_classes": [],
+      "lines": 884,
+      "methods": [
+        {
+          "name": "run",
+          "signature": "func run() -> Dictionary"
+        }
+      ],
+      "path": "res://tools/validate_data.gd",
+      "private_methods": 32,
+      "role": "tool",
+      "signals": []
+    }
+  ],
+  "parse_errors": [],
+  "scenes": [
+    {
+      "ext_resources": 3,
+      "generated": true,
+      "nodes": 5,
+      "path": "res://scenes/main.tscn",
+      "root_name": "Main",
+      "root_type": "Node",
+      "spec": "res://scenes_src/main.json"
+    },
+    {
+      "ext_resources": 1,
+      "generated": true,
+      "nodes": 5,
+      "path": "res://scenes/title_scene.tscn",
+      "root_name": "TitleScene",
+      "root_type": "Control",
+      "spec": "res://scenes_src/title_scene.json"
+    }
+  ]
+}

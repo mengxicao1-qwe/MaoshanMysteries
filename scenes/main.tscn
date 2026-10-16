@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/play_view.gd" id="1_0"]
+[ext_resource type="Script" path="res://scripts/ui/slice_hud.gd" id="1_1"]
+[ext_resource type="Script" path="res://scripts/ui/overlay_ui.gd" id="1_2"]
+
+[node name="Main" type="Node"]
+
+[node name="PlayView" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0")
+
+[node name="SliceHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1")
+
+[node name="InfoLabel" type="Label" parent="SliceHUD"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 1256.0
+offset_bottom = 704.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.92, 0.94, 1, 1)
+text = "正在初始化……"
+
+[node name="OverlayUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_2")

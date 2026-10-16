@@ -1,0 +1,196 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "case_id": 1,
+    "case_title": "白鹄不举",
+    "purpose": "推演板与矛盾高亮的数据表（docs/market/01 §2.5 死法 3）：把玩家已入录的线索卡拼成推论，并把'对不上'的地方顶到最前；连续若干遍没有新线索时主动给下一条线索的落点。",
+    "source": "docs/story/04_案件_案一至案二.md §案一（六环证据链/缝）+ data/clues/case_01_clues.json + data/scenarios/case_01_baihu.json（拍点 room/second/npc_id）",
+    "card_semantics": "card_id 就是 clue_id（台账见 data/clues/case_01_clues.json）：玩家没入录的卡不出现，出现即表示'这件事他记下了'。",
+    "deduction_semantics": "require_cards 全部入录 => 该推论成立（unlocked）；core=true 表示它在结案六环上（案一 resolve_conditions.require_clues）。",
+    "conflict_semantics": "require_cards 全部入录 => 该矛盾'点亮'（置顶高亮）；resolve_cards 是能把它收束的卡（入录后写'已收束'，但仍留在板上——它仍是本案的结论之一）。",
+    "stuck_semantics": "自上次入录新线索起，连续 >= after_loops_without_progress 遍没有新线索时给一条提示；lead_clue 已经入录就跳过这一条，取第一条'还没入录'的。lead 的 room/second/npc_id 与 data/scenarios/case_01_baihu.json 的拍点一致。",
+    "loop_note": "loop_index 从 0 起（第 1 遍 = 0）。first_loop 是该线索最早可入录的遍数（来自线索台账 source 里的'第 N 遍起'；节点目击类为 0）。"
+  },
+  "deductions": [
+    {
+      "deduction_id": "ded_01_last_row_edited",
+      "title": "碑阴末行被改过",
+      "require_cards": ["clue_01_four_in_three", "clue_01_hole_chipped"],
+      "text": "凿平面恰好三字宽、孔口却崩了新石屑：少的那个字是被换成多的，凿字就发生在这一页的时间轴上。",
+      "chain": "环一·环二",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_02_two_hands",
+      "title": "末行不是同一只手写的",
+      "require_cards": ["clue_01_four_in_three", "clue_01_two_hands"],
+      "text": "前十八行一只手写了一辈子，末行那只只写了三个字——后加的字。",
+      "chain": "环一",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_03_a_real_name",
+      "title": "被凿掉的是一个具体人名",
+      "require_cards": ["clue_01_half_stroke_cun", "clue_01_two_hands"],
+      "text": "下缘那半笔'寸'：凿工收笔偏了，'守'字没凿干净。'不详其姓'原本是三个字的名字。",
+      "chain": "环二",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_04_name_is_gan_shoupu",
+      "title": "那三个字是'甘守朴'",
+      "require_cards": ["clue_01_rubbing_fragment", "clue_01_half_stroke_cun"],
+      "text": "民国拓本把末行拓得清清楚楚：康熙四十一年三月十八日，里人甘守朴祷雨得应。石头与纸对得上，只与碑上那四个字对不上。",
+      "chain": "环三·环二",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_05_dust_is_fresh",
+      "title": "改字是成心做的，做得很干净",
+      "require_cards": ["clue_01_grey_bag", "clue_01_stone_dust"],
+      "text": "袋里正是末行凿下的三字石屑，粉末还在；藏东西的人知道该藏在哪——碑座石缝。",
+      "chain": "环四",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_06_insider_knot",
+      "title": "改字的人是行内人",
+      "require_cards": ["clue_01_double_knot", "clue_01_stone_dust"],
+      "text": "袋口双回结——先反手一圈再回扣一道，'改一处，留一处底'，是行规的签名。他不是外人。",
+      "chain": "环四",
+      "core": false
+    },
+    {
+      "deduction_id": "ded_07_the_other_side_was_right",
+      "title": "反方的账：不移碑只需牺牲一行",
+      "require_cards": ["clue_01_three_sources_conflict", "clue_01_keep_stele_motive"],
+      "text": "《茅山志》不载、县志挂在别人姓下、家谱差三十年——'诸本无征'是真的。第十九行若属后人附益，整通碑会被判非灵迹、移入库房。他改了一个名字，救了一通碑。",
+      "chain": "环五",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_08_family_remembers",
+      "title": "删掉名字 = 让一个家族从'领雨'里消失",
+      "require_cards": ["clue_01_bowl_bottom", "clue_01_half_stroke_cun"],
+      "text": "碗底刻着'甘氏领雨'，碗口朝下压了两百年：碑上那个名字不是孤立的一个字，它有碗、有日期、有接手的人。",
+      "chain": "环六",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_09_the_seam",
+      "title": "缝：日子还在，应这个名字的人没了",
+      "require_cards": ["clue_01_date_untouched", "clue_01_rubbing_fragment"],
+      "text": "三月十八一个字没动，名字没了。按铁律三，期会日不可空——空掉的那一格正是今年的死线。",
+      "chain": "死亡线（缝）",
+      "core": true
+    },
+    {
+      "deduction_id": "ded_10_edited_before",
+      "title": "此处曾改，不止一次",
+      "require_cards": ["note_01_first_edit", "clue_01_rubbing_fragment"],
+      "text": "拓本上'甘守朴'三字上方那道极浅的旧凿痕：第一次改的，也许也是好意。自注不是证据，是主角自己的判断。",
+      "chain": "伏笔·卷一→案二",
+      "core": false
+    }
+  ],
+  "conflicts": [
+    {
+      "conflict_id": "cf_01_stone_versus_paper",
+      "title": "石头说'不详其姓'，纸说'甘守朴'",
+      "require_cards": ["clue_01_four_in_three", "clue_01_rubbing_fragment"],
+      "text": "同一行字，碑上是四个字、拓本上是三个字。两件都是实物，必有一件不真。",
+      "severity": "核心",
+      "resolve_cards": ["clue_01_half_stroke_cun"]
+    },
+    {
+      "conflict_id": "cf_02_three_sources_fight",
+      "title": "三方对校：三说互殴",
+      "require_cards": ["clue_01_three_sources_conflict"],
+      "text": "志不载、县志挂在另一个姓下、家谱写'守朴公'却生卒差三十年——三条材料互相打架。",
+      "severity": "核心",
+      "resolve_cards": ["clue_01_keep_stele_motive"]
+    },
+    {
+      "conflict_id": "cf_03_papers_say_nobody",
+      "title": "文书里没有这个人，活人家里有一只碗",
+      "require_cards": ["clue_01_three_sources_conflict", "clue_01_bowl_bottom"],
+      "text": "'诸本无征'说的是纸上的事；碗底那四个字是活人的事——接了两百年，不该在这一年断。",
+      "severity": "核心",
+      "resolve_cards": []
+    },
+    {
+      "conflict_id": "cf_04_old_face_new_chip",
+      "title": "凿平面发黑（旧），孔口却崩了新口",
+      "require_cards": ["clue_01_hole_chipped"],
+      "text": "余页里那个孔是完好的，现实里崩了新口——孔是被后来凿字的刀打豁的。'凿痕是旧的'只是伪装。",
+      "severity": "核心",
+      "resolve_cards": []
+    },
+    {
+      "conflict_id": "cf_05_visitor_bag",
+      "title": "看山人当它是游客丢的，袋里却是凿下的石屑",
+      "require_cards": ["clue_01_grey_bag", "clue_01_stone_dust"],
+      "text": "吴敬堂还往里塞了塞——他见过不止一次；可袋里粉末尚在，装它的人就站在这一页上。",
+      "severity": "次要",
+      "resolve_cards": ["clue_01_double_knot"]
+    },
+    {
+      "conflict_id": "cf_06_date_without_name",
+      "title": "日子一个字没动，名字没了",
+      "require_cards": ["clue_01_date_untouched"],
+      "text": "他敢改名字，不敢改日子：日期还在，应这个名字的人没了。期会日不可空——这才是本案的缝。",
+      "severity": "核心",
+      "resolve_cards": []
+    }
+  ],
+  "stuck_hints": [
+    {
+      "after_loops_without_progress": 2,
+      "lead_clue": "clue_01_four_in_three",
+      "npc_id": "npc_01_muqing",
+      "room": "baihutai_west",
+      "second": 70,
+      "text": "穆青卯时二刻在台西架摺尺量碑（第 70 秒，台上西侧）——先去看她量出什么，这是全部推论的起点。"
+    },
+    {
+      "after_loops_without_progress": 3,
+      "lead_clue": "clue_01_hole_chipped",
+      "npc_id": "npc_01_liu_guijing",
+      "room": "stall",
+      "second": 70,
+      "text": "桂婶台下东侧摊后扎纸鹄（第 70 秒）：她会漏出一句'孔边上崩了新石屑'——那块碑不是旧凿痕。"
+    },
+    {
+      "after_loops_without_progress": 4,
+      "lead_clue": "clue_01_grey_bag",
+      "npc_id": "npc_01_wu_jingtang",
+      "room": "stele_base",
+      "second": 175,
+      "text": "看山的老吴辰时蹲在碑座前摸石缝（第 175 秒，碑座）——他的习惯动作暴露了藏东西的位置。"
+    },
+    {
+      "after_loops_without_progress": 5,
+      "lead_clue": "clue_01_stone_dust",
+      "npc_id": "npc_01_qiu_demao",
+      "room": "stone_steps_7",
+      "second": 170,
+      "text": "邱德茂只在石阶第七级停那一小会儿（第 140–200 秒之间，石阶第七级）：站过去截住他，问他袋子里是什么。"
+    },
+    {
+      "after_loops_without_progress": 6,
+      "lead_clue": "clue_01_bowl_bottom",
+      "npc_id": "npc_01_gan_fengyi",
+      "room": "baihutai_bei",
+      "second": 300,
+      "text": "甘阿婆辰时回碑阴看那只碗（第 300 秒，碑阴）——但这要**第七遍起**她才会应你：先想办法让她看见碗被翻过来。"
+    },
+    {
+      "after_loops_without_progress": 7,
+      "lead_clue": "clue_01_date_untouched",
+      "npc_id": "npc_01_muqing",
+      "room": "baihutai_south",
+      "second": 355,
+      "text": "辰时末穆青合本子之前会把末行的日子念一遍（第 355 秒，台前）：三月十八，一个字没动——记住这一点，它就是缝。"
+    }
+  ]
+}

@@ -1,0 +1,491 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "case_id": 1,
+    "map_id": "maoshan_baihutai",
+    "description": "卷一·案一《白鹄不举》对话登记表。键 = dialogue_id，被 data/scenarios/case_01_baihu.json 的节点 dialogue_id 引用（共 29 个节点入口 + 8 个由选项 goto 进入的后续条目）。条目形状沿用 docs/story/09_系统映射与数据规格.md §6 的示例：speaker / lines[] / unlock_if{has_clues, loop_min} / options[{text, reply, goto, require_clues, require_loop_min, add_clue}]。",
+    "source": "docs/story/04_案件_案一至案二.md §案一（NPC 活人动线、六环证据链、'代价四 主角与穆青第一次裂缝'）+ docs/story/02_世界观与真相.md（铁律三·期会日 / 名籍 / 服饵断谷与存思日月）",
+    "convention_note": "扩展字段说明（validate_data.gd 不校验 dialogue，下列字段是给实现层读的约定，不影响任何闸门）：options[].reply = 该选项的即时回答（不产生新条目）；options[].require_loop_min = 该选项需要的余页遍数（loop_index，0 起）；options[].add_clue = 该选项入录的线索（幂等）；条目上的 note = 秒数/遍数来源。",
+    "tone_note": "'代价四'按 docs/story/04 原样写：主角在对话里当着穆青的面对照入录页——她第一次意识到自己被当成可核对的'材料'。所有台词不带形容词式解说，依赖事实与停顿。"
+  },
+  "dialogues": {
+    "mq_00_arrive": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她把拓包、摺尺、强光笔一样一样摆开，没抬头）这条不成立。",
+        "碑我量过。你要看就先看行距——别先看字。"
+      ],
+      "options": [
+        { "text": "行距怎么了？", "goto": "mq_01_measure" },
+        { "text": "（先把这一句记下来，不追问）", "goto": "" }
+      ],
+      "note": "卯时初 t=0，台上西侧（node npc_01_muqing @0）。"
+    },
+    "mq_01_measure": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "上十八行的行距是死的，都压在同一条线上。末行这四个字——字身瘦、字口窄，行距自己往上缩了半分。",
+        "四个字，挤在三个字的地方。"
+      ],
+      "options": [
+        { "text": "（侧光看凿平面：比四字所占更宽，恰好三字宽）", "reply": "（你把'四个字挤在三个字的地方'记下来。这是这一页上你第一眼就能看见的异常。）", "goto": "" },
+        { "text": "（记完就走，别让她看出你在记）", "goto": "" }
+      ],
+      "note": "卯时二刻 t=70（node 目击 → clue_01_four_in_three）。"
+    },
+    "mq_02_copy_stuck": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_four_in_three"], "loop_min": 2 },
+      "lines": [
+        "这一行我抄了三遍，三遍都读不通。",
+        "（她的笔停在'不详其姓'上）四个字塞三个字的地方——谁做的活？"
+      ],
+      "options": [
+        { "text": "（以辨笔第一层'认手'看刀口收势：不看内容，只看位置关系）", "require_clues": ["clue_01_four_in_three"], "goto": "mq_02b_two_hands" },
+        { "text": "（不接话，先记下她的笔停在哪一笔上）", "goto": "" }
+      ],
+      "note": "辰时正 t=210（node 目击 → clue_01_two_hands）。环一需要余页第二遍起。"
+    },
+    "mq_02b_two_hands": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_four_in_three"], "loop_min": 2 },
+      "lines": [
+        "这不是一只手。前面那只写了一辈子，后面那只只写了三个字。",
+        "（她把这句抄进本子。署名的地方，她写了你的名字。）"
+      ],
+      "options": [
+        { "text": "（把这句话收进本子——代价从自己身上出）", "reply": "（本子上多了一行：碑上两只手。你与穆青之间的第一道裂缝，就是从这一行开始的。）", "add_clue": "clue_01_two_hands", "goto": "" },
+        { "text": "两只手之间，隔了多久？", "require_loop_min": 3, "goto": "mq_06_livingline" }
+      ],
+      "note": "代价四的落点：她第一次意识到自己在被当成可核对的材料。"
+    },
+    "mq_03_rubbing": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_two_hands"], "loop_min": 2 },
+      "lines": [
+        "（她压低声音）我从道院库房带出来半截拓本——民国拓的《白鹄台碑》，后半截。",
+        "（拓纸上，末行拓得清清楚楚）康熙四十一年三月十八日，里人甘守朴祷雨得应。"
+      ],
+      "options": [
+        { "text": "（抢记：把末行原样描下来——拓纸的墨色每遍都在淡）", "reply": "（墨色淡下去了，但这一遍还认得出来。你把它描在本子上。）", "goto": "" },
+        { "text": "（只记住'甘守朴'三个字，拓纸留在她手里）", "goto": "" }
+      ],
+      "note": "辰时三刻前 t=240（node 目击 → clue_01_rubbing_fragment，环三）。若当遍未及抢记、或未把拓纸压在碑阴口请人念出，本遍只留 sealed_01_gan_shoupu（docs/story/09 §4.2）。"
+    },
+    "mq_04_three_sources": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_rubbing_fragment"], "loop_min": 3 },
+      "lines": [
+        "县志我查了，道院库房也去了。《茅山志》不载甘守朴。",
+        "县志把康熙四十一年那次祷雨挂在另一个姓下；甘家家谱写'守朴公'，生卒跟祷雨那年差三十年。",
+        "三条材料互相打架。他说的'诸本无征'——是真的。"
+      ],
+      "options": [
+        { "text": "（三条材料都抄进本子，一句判断都不写）", "goto": "" },
+        { "text": "他不是为了贪。", "reply": "（穆青看了你一眼）你替他说话？", "goto": "" }
+      ],
+      "note": "辰时 t=300（node 目击 → clue_01_three_sources_conflict，环五；反方的账成立）。"
+    },
+    "mq_05_again": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_four_in_three"], "loop_min": 1 },
+      "lines": [
+        "（她把本子合上）日子他没敢动——三月十八，一个字没动。",
+        "他改的是名字。日期还在，应这个名字的人没了。",
+        "再来一次。"
+      ],
+      "options": [
+        { "text": "（把末行的日子念一遍再合本子）", "goto": "" }
+      ],
+      "note": "辰时末 t=355（原文 t=420→355；node 目击 → clue_01_date_untouched，本案的'缝'）。"
+    },
+    "mq_06_livingline": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_two_hands"], "loop_min": 3 },
+      "lines": [
+        "活人的动线是唯一没被改过的东西——因为他们没写在录上。",
+        "（她翻回前一页给你看）你记的是人。我记的是字。这两本本子，迟早有一本要错。"
+      ],
+      "options": [
+        { "text": "（这一页里谁没有位置？）", "reply": "（你在本子上圈出两个名字：一个在页外，一个只在电话里。）", "goto": "" }
+      ],
+      "note": "余页第三遍起。本案的破题句：'谁在余页里没有位置'。"
+    },
+    "mq_07_showme": {
+      "speaker": "穆青",
+      "unlock_if": { "has_clues": ["clue_01_rubbing_fragment"], "loop_min": 4 },
+      "lines": [
+        "你说的我听不懂。",
+        "但你把这个给我看——这个我懂。"
+      ],
+      "options": [
+        { "text": "（把拓纸压在她面前，不再解释）", "goto": "" }
+      ],
+      "note": "余页第四遍起。两人的合作方式在这一句上定型：主角给物证，穆青给判断。"
+    },
+
+    "zsl_01_call": {
+      "speaker": "郑守录",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（电话里杂音很大）碑阴那一行，念通了没有？",
+        "（杂音里隐约还有另一个人，念着和碑上一样的句子，比你这边慢半拍）"
+      ],
+      "options": [
+        { "text": "还没。你那边是什么声音？", "goto": "zsl_02_rule" },
+        { "text": "（把电话举向碑阴，请他隔着电话听）", "require_clues": ["clue_01_half_stroke_cun"], "goto": "zsl_02_rule" }
+      ],
+      "note": "辰时三刻 t=245，room phone（NPC npc_01_zheng_shoulu 本页唯一的页外入口）。每遍一字不差的电话 = 玩家的时间标尺。"
+    },
+    "zsl_02_rule": {
+      "speaker": "郑守录",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "字不能乱改。乱改一个字，就有一个人的生死对不上号。",
+        "（停顿）这是铁律。你别问我是谁定的。"
+      ],
+      "options": [
+        { "text": "那对不上号的，会怎么样？", "require_loop_min": 6, "goto": "zsl_03_papers" }
+      ],
+      "note": "铁律三·期会日不可空（docs/story/02）。"
+    },
+    "zsl_03_papers": {
+      "speaker": "郑守录",
+      "unlock_if": { "has_clues": [], "loop_min": 6 },
+      "lines": [
+        "你以为我在守这些纸？我守的是纸下面的人。",
+        "（他不肯往下说。杂音里另一个人还在念，还是慢半拍。）"
+      ],
+      "options": [
+        { "text": "（把'慢半拍'记下来：那不是回声）", "goto": "" }
+      ],
+      "note": "余页第六遍起。卷二的'名籍'机制在这里露头；服饵断谷／存思日月由郑守录给药或代报。"
+    },
+
+    "gfy_00_door": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她坐在门内，门牌是空的，钉子还在）进来坐？",
+        "我们家的人，从前是替这一片求雨的。"
+      ],
+      "options": [
+        { "text": "甘守朴是您什么人？", "require_clues": ["clue_01_half_stroke_cun"], "reply": "（她的手在膝盖上收紧了一下）那是我祖上。碑上有他的名。", "goto": "" },
+        { "text": "（在门口站一会儿，不进门）", "goto": "" }
+      ],
+      "note": "卯时初 t=0，gan_house。余页里门牌空白。"
+    },
+    "gfy_01_lock_door": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她捧一只陶碗出来，回身锁门）这碗比碑老。",
+        "今天不能翻过来。"
+      ],
+      "options": [
+        { "text": "为什么不能翻？", "reply": "落了雨才能翻。今天不下雨。", "goto": "" }
+      ],
+      "note": "卯时二刻 t=70（原文 t=70）。"
+    },
+    "gfy_02_bowl_down": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她把碗放在碑阴一侧，碗口朝下）",
+        "（声音低得几乎听不见）今年又没有人报名字。"
+      ],
+      "options": [
+        { "text": "报什么名字？", "reply": "碑上那个。领雨的人家，得在碑上有个名字。", "goto": "" }
+      ],
+      "note": "卯时三刻 t=140（原文 t=140）。'无人领雨'的物证化。"
+    },
+    "gfy_03_chant_stop": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她跟着念，念到'召雨灌旱稻'就停住，不出声）",
+        "（后面那句她从来不念）"
+      ],
+      "options": [
+        { "text": "后面那句是什么？", "reply": "'某氏领雨'。没有某氏了。", "require_clues": ["clue_01_half_stroke_cun"], "goto": "gfy_06_twohundred" }
+      ],
+      "note": "辰时正 t=210，room crowd（原文 t=210）。循环触发点'周管事清嗓子、接不上'的旁观视角。"
+    },
+    "gfy_04_bowl_bottom": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": ["clue_01_half_stroke_cun"], "loop_min": 7 },
+      "lines": [
+        "（她看见供桌上的陶碗被翻过来，愣了一下，离开人群走回碑阴）",
+        "落了雨才翻过来。……你自己看碗底。"
+      ],
+      "options": [
+        { "text": "（翻看碗底：甘氏领雨）", "reply": "（碗底刻着四个字。这是这一页上唯一还认这个姓的东西。）", "goto": "" },
+        { "text": "二百年了，为什么还留着这只碗？", "require_loop_min": 6, "goto": "gfy_06_twohundred" }
+      ],
+      "note": "第七遍起、且玩家主动把供桌上的陶碗翻过来（node 目击 → clue_01_bowl_bottom，环六）。玩家摆件改变她'看得见的'。"
+    },
+    "gfy_05_home": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "今年又没有人报名字。",
+        "（她转身回家，走得很慢）"
+      ],
+      "options": [
+        { "text": "（跟上去两步，又停下来）", "goto": "" }
+      ],
+      "note": "辰时末 t=355（原文 t=420→355）。"
+    },
+    "gfy_06_twohundred": {
+      "speaker": "甘凤仪",
+      "unlock_if": { "has_clues": [], "loop_min": 6 },
+      "lines": [
+        "我家这块碑认了二百年。石头认人，比人认人牢。",
+        "（她把碗抱在怀里）你要动它，先问它认不认你。"
+      ],
+      "options": [
+        { "text": "（这句话不进本子——它没有出处，但它是真的）", "goto": "" }
+      ],
+      "note": "余页第六遍起。'认'字是全案的题眼：石头认人。"
+    },
+
+    "qdm_01_steps": {
+      "speaker": "邱德茂",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（他站在石阶第七级上，没上来，手里提着一只灰布口袋）",
+        "（他不看你，看碑台）"
+      ],
+      "options": [
+        { "text": "（先记住他站的是哪一级）", "reply": "（石阶第七级。他每一遍都停在这里，一秒不差。）", "goto": "" }
+      ],
+      "note": "卯时三刻 t=140（原文 t=140）。他不上碑台——玩家唯一能截住他的时刻。"
+    },
+    "qdm_02_bag": {
+      "speaker": "邱德茂",
+      "unlock_if": { "has_clues": ["clue_01_grey_bag"], "loop_min": 4 },
+      "lines": [
+        "（他把袋子往身后挪了挪）",
+        "（袋子口上，你看见一道绳结：先反手一圈，再回扣一道）"
+      ],
+      "options": [
+        { "text": "（截住他：袋子给我看一下）", "require_loop_min": 4, "goto": "qdm_03_admit" },
+        { "text": "（只把那道结原样描在本子上，不出声）", "reply": "（双回结：先反手一圈，再回扣一道。行规的签名。）", "add_clue": "clue_01_double_knot", "goto": "" }
+      ],
+      "note": "卯时三刻 t=170（第四遍起；node 目击 → clue_01_stone_dust，环四：袋中三字石屑，粉末尚在）。"
+    },
+    "qdm_03_admit": {
+      "speaker": "邱德茂",
+      "unlock_if": { "has_clues": ["clue_01_stone_dust"], "loop_min": 4 },
+      "lines": [
+        "我凿的。改一处，留一处底——上头教的。",
+        "（他把袋口打开给你看：石屑，粉末还在）"
+      ],
+      "options": [
+        { "text": "上头是谁？", "reply": "（他没答。他把袋口重新系成那个结，系得很快。）", "goto": "" },
+        { "text": "你改了一个名字。", "require_loop_min": 5, "goto": "qdm_04_ningque" }
+      ],
+      "note": "环四的正面承认（'上头教的'= 案二伏笔）。"
+    },
+    "qdm_04_ningque": {
+      "speaker": "邱德茂",
+      "unlock_if": { "has_clues": ["clue_01_double_knot"], "loop_min": 5 },
+      "lines": [
+        "诸本无征，宁阙毋诬。",
+        "不移字，整通碑就要被判非灵迹、移入库房，再不许在这儿念——十九行一起死。移字，只死一行。",
+        "我改了一个名字，救了一通碑。"
+      ],
+      "options": [
+        { "text": "可你改的是活人的名籍。日子你没敢动。", "require_clues": ["clue_01_date_untouched"], "require_loop_min": 8, "add_clue": "clue_01_keep_stele_motive", "goto": "qdm_05_why_three" }
+      ],
+      "note": "余页第五遍起（反方的账 → clue_01_keep_stele_motive，环五）。缝不是被弄坏的，是被补坏的。"
+    },
+    "qdm_05_why_three": {
+      "speaker": "邱德茂",
+      "unlock_if": { "has_clues": ["clue_01_keep_stele_motive"], "loop_min": 8 },
+      "lines": [
+        "（他第一次正眼看你）那三个字，凭什么就该在石头上？",
+        "你告诉我：谁的名字该留在石头上，谁的不该？——你要是答得出，我就把凿子给你。"
+      ],
+      "options": [
+        { "text": "（答不出）", "reply": "（他下山了。这一遍你又没能答出来。）", "goto": "" }
+      ],
+      "note": "第八遍（终局前最后一遍）。留给卷二的钩子：他女儿打来电话，他不接、按掉——那时候他会不认得这个号码。"
+    },
+
+    "zcg_00_prepare": {
+      "speaker": "周长庚",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（他在备供桌，头也不抬）辰时前摆好。今年人多，别乱走。",
+        "（抽屉里压着一份折了三折的纸，压在本子底下——你没看清）"
+      ],
+      "options": [
+        { "text": "（先记住那份纸压在什么下面）", "goto": "" }
+      ],
+      "note": "卯时初 t=0，village_office。那份纸 = 无落款校勘意见书（环五的反方账本）。"
+    },
+    "zcg_01_carry": {
+      "speaker": "周长庚",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（四个人抬供桌，他在前面喊号子，喊的调子跟念碑是一个调）",
+        "（供桌摆在碑前偏东，空着一角——'无人领雨'的位置）"
+      ],
+      "options": [
+        { "text": "（记下供桌上的空位）", "goto": "" }
+      ],
+      "note": "卯时二刻 t=70（原文 t=70）。"
+    },
+    "zcg_02_kite": {
+      "speaker": "周长庚",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（他挑着竹竿把白纸鹄挑上碑顶，鹄腹的线系在碑阴那个小石孔上）",
+        "今年得举起来。举不起来，这一年就白过了。"
+      ],
+      "options": [
+        { "text": "（线系在那个崩了口的石孔上）", "require_clues": ["clue_01_hole_chipped"], "reply": "（孔边的新崩口，就是这根线每年来回磨的位置——但崩口不是磨出来的，是刀打的。）", "goto": "" }
+      ],
+      "note": "卯时三刻 t=140（原文 t=140）。'鹄举则雨至'。"
+    },
+    "zcg_03_chant_stall": {
+      "speaker": "周长庚",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（诵碑）……召雨灌旱稻——",
+        "（清嗓子，三次）……某氏领雨。",
+        "（台下人跟着念。只有后面那一句，没有人接。）"
+      ],
+      "options": [
+        { "text": "（这就是余页的循环触发点）", "reply": "（诵碑念到'召雨灌旱稻'接不上'某氏领雨'的那一秒，天光和声音一起往回退。）", "goto": "" }
+      ],
+      "note": "辰时正 t=210（原文 t=210），room baihutai_yang。★ 循环触发点（docs/story/04 §案一）。"
+    },
+    "zcg_04_third_fall": {
+      "speaker": "周长庚",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（第三次去捡纸鹄，脸色不好看）落三回。去年落两回。",
+        "（落点还是碑座东北角，一寸不差）"
+      ],
+      "options": [
+        { "text": "（落点每遍一样——记下来）", "goto": "" }
+      ],
+      "note": "辰时末 t=355（原文 t=420→355）。循环的可见节拍。"
+    },
+
+    "lgj_00_stall": {
+      "speaker": "刘桂英",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（摆摊）香、烛、黄纸。今年香客少，纸鹄倒是照扎。",
+        "（她手上有打结磨出来的厚茧）"
+      ],
+      "options": [
+        { "text": "（问她去年系线的时候看见什么）", "goto": "" }
+      ],
+      "note": "卯时初 t=0，stall_east。"
+    },
+    "lgj_01_kite": {
+      "speaker": "刘桂英",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她蹲在摊后扎纸鹄，一炷香的工夫一架，每年一架）",
+        "（她啧了一声）系线那个石孔，边上崩了新石屑。去年我系的时候就看见了，没敢说。"
+      ],
+      "options": [
+        { "text": "崩口是新的还是旧的？", "reply": "新。石屑还在。旧崩口不长这样。", "goto": "" },
+        { "text": "（蹲下看那个孔：余页里这个孔是完好的）", "goto": "" }
+      ],
+      "note": "卯时二刻 t=70（原文 t=70；node 目击 → clue_01_hole_chipped，环二）。"
+    },
+    "lgj_02_hand_over": {
+      "speaker": "刘桂英",
+      "unlock_if": { "has_clues": ["clue_01_hole_chipped"], "loop_min": 2 },
+      "lines": [
+        "（把鹄交给管事人，叮嘱一句）挑高点。",
+        "（她顺手往碑阴一指）那里还有一截没收干净——你看，'守'字下面那半笔还在。"
+      ],
+      "options": [
+        { "text": "（凑近看凿平面下缘：一小截'寸'）", "reply": "（半笔'寸'。被凿掉的是一个具体人名，凿工收笔偏了半笔。）", "goto": "" }
+      ],
+      "note": "卯时三刻 t=140（原文 t=140；node 目击 → clue_01_half_stroke_cun，环二。第三遍起）。"
+    },
+    "lgj_03_burn": {
+      "speaker": "刘桂英",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（摊前烧纸）人都到齐了，名字还是那一个没有。",
+        "（她数落今年香客少，数到一半不数了）"
+      ],
+      "options": [
+        { "text": "（把'那一个没有'记下来）", "goto": "" }
+      ],
+      "note": "辰时正 t=210（原文 t=210）。"
+    },
+    "lgj_04_silent": {
+      "speaker": "刘桂英",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（她站在人群最后，不出声，眼圈红）",
+        "（她没有跟着念最后一句）"
+      ],
+      "options": [
+        { "text": "（她早就知道。她只是没敢说。）", "goto": "" }
+      ],
+      "note": "辰时末 t=355（原文 t=420→355），room crowd_back。"
+    },
+
+    "wjt_00_steps": {
+      "speaker": "吴敬堂",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（他一边数台阶一边上来）三百二十七级。我数了十九年。",
+        "（他看了你一眼）你不是来烧香的。你昨天也在这儿。"
+      ],
+      "options": [
+        { "text": "（他说对了。'昨天'——他记得。）", "reply": "（看山人记得每一个来过的生人。这是余页里第一条'活人对得上号'的证词。）", "goto": "" }
+      ],
+      "note": "卯时正 t=35（原文 t=35），stone_steps。"
+    },
+    "wjt_01_stand": {
+      "speaker": "吴敬堂",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（背手站在碑侧看）这碑啊，年年有人拓，年年有人念。",
+        "（他不看碑上的字，只看人）"
+      ],
+      "options": [
+        { "text": "（他看人。问他谁常来。）", "goto": "" }
+      ],
+      "note": "卯时三刻 t=140（原文 t=140）。"
+    },
+    "wjt_02_crack": {
+      "speaker": "吴敬堂",
+      "unlock_if": { "has_clues": [], "loop_min": 4 },
+      "lines": [
+        "（他蹲下，把手伸进碑座下的石缝里摸一摸）看看有没有积水。",
+        "（摸到一半手停住——石缝里塞着一只灰布口袋。他把它往里塞了塞）游客丢的。"
+      ],
+      "options": [
+        { "text": "（记下他为什么会去摸那条缝）", "reply": "（十九年的习惯动作。藏东西的人算准了不会有人去翻——他没算准看山人的手。）", "goto": "" }
+      ],
+      "note": "辰时 t=175（原文 t=175；node 目击 → clue_01_grey_bag，环四）。"
+    },
+    "wjt_03_shout": {
+      "speaker": "吴敬堂",
+      "unlock_if": { "has_clues": [], "loop_min": 0 },
+      "lines": [
+        "（他第一个喊）鹄落了！——第三次了！",
+        "（落点还是碑座东北角。他把鹄捡起来，抖了抖灰。）"
+      ],
+      "options": [
+        { "text": "（每遍第三落、每遍同一个落点）", "goto": "" }
+      ],
+      "note": "辰时末 t=355（原文 t=420→355）。"
+    }
+  }
+}

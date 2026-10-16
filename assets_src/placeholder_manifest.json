@@ -1,0 +1,14 @@
+{
+  "_comment": "占位图清单 -> assets/placeholder/<name>.png。每个条目：name=文件名(不含扩展名)，size=[宽,高]，color=主色，kind=用途分类(npc/prop/ui/fx，仅作备注)。zh: 这些是生成的占位素材，不要手工编辑 PNG，改这里再跑 tools/gen_placeholders.gd。",
+  "placeholders": [
+    { "name": "npc_butler_idle", "size": [32, 48], "color": "Color(0.62, 0.56, 0.78, 1)", "kind": "npc" },
+    { "name": "npc_butler_talk", "size": [32, 48], "color": "Color(0.72, 0.66, 0.88, 1)", "kind": "npc" },
+    { "name": "npc_maid_idle", "size": [32, 48], "color": "Color(0.78, 0.58, 0.66, 1)", "kind": "npc" },
+    { "name": "player_idle", "size": [32, 48], "color": "Color(0.55, 0.72, 0.88, 1)", "kind": "npc" },
+    { "name": "prop_door", "size": [48, 64], "color": "Color(0.55, 0.42, 0.32, 1)", "kind": "prop" },
+    { "name": "prop_key", "size": [16, 16], "color": "Color(0.9, 0.78, 0.35, 1)", "kind": "prop" },
+    { "name": "prop_clock", "size": [32, 32], "color": "Color(0.7, 0.7, 0.74, 1)", "kind": "prop" },
+    { "name": "ui_panel_9slice", "size": [24, 24], "color": "Color(0.16, 0.17, 0.24, 0.92)", "kind": "ui" },
+    { "name": "fx_loop_ring", "size": [64, 64], "color": "Color(0.55, 0.85, 0.95, 0.75)", "kind": "fx" }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "scene_name": "Main",
+  "_comment": "主场景规格（M0 可玩纵切片）。改这个文件，然后跑 tools/gen_scene.gd 重新生成 scenes/main.tscn —— 不要手改 .tscn（uid/unique_id 随机、格式脆弱）。表现层脚本换掉即可，不需要动场景结构。层次自下而上是 PlayView（画面+鼠标）→ SliceHUD（玩法状态源+键盘）→ OverlayUI（引导/结算弹窗，mouse_filter=2 只在弹窗开着时吃点击）。",
+  "root": {
+    "type": "Node",
+    "name": "Main",
+    "props": {},
+    "children": [
+      {
+        "type": "Control",
+        "name": "PlayView",
+        "script": "res://scripts/ui/play_view.gd",
+        "props": {
+          "anchors_preset": 15,
+          "anchor_right": 1.0,
+          "anchor_bottom": 1.0,
+          "grow_horizontal": 2,
+          "grow_vertical": 2,
+          "mouse_filter": 0
+        }
+      },
+      {
+        "type": "Control",
+        "name": "SliceHUD",
+        "script": "res://scripts/ui/slice_hud.gd",
+        "props": {
+          "anchors_preset": 15,
+          "anchor_right": 1.0,
+          "anchor_bottom": 1.0,
+          "grow_horizontal": 2,
+          "grow_vertical": 2,
+          "mouse_filter": 2
+        },
+        "children": [
+          {
+            "type": "Label",
+            "name": "InfoLabel",
+            "props": {
+              "offset_left": 24.0,
+              "offset_top": 16.0,
+              "offset_right": 1256.0,
+              "offset_bottom": 704.0,
+              "mouse_filter": 2,
+              "theme_override_colors/font_color": "Color(0.92, 0.94, 1, 1)",
+              "theme_override_font_sizes/font_size": 16,
+              "text": "正在初始化……"
+            }
+          }
+        ]
+      },
+      {
+        "type": "Control",
+        "name": "OverlayUI",
+        "script": "res://scripts/ui/overlay_ui.gd",
+        "props": {
+          "anchors_preset": 15,
+          "anchor_right": 1.0,
+          "anchor_bottom": 1.0,
+          "grow_horizontal": 2,
+          "grow_vertical": 2,
+          "mouse_filter": 2
+        }
+      }
+    ]
+  }
+}

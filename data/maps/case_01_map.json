@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "case_id": 1,
+  "map_id": "maoshan_baihutai",
+  "display_name": "茅山大茅峰·白鹄台",
+  "travel_time_field": "travel_seconds",
+  "note": "案一《白鹄不举》的走位图。rooms[].exits 是有向边：{ to, travel_seconds }，travel_seconds 一律整数秒 = 从本房间走到 to 所需要的余页秒数。地形不对称，所以同一段路的往返耗时可以不同（上山比下山慢）：石阶下→台前南 5 秒 / 台前南→石阶下 4 秒；石阶第七级→台前南 一炷香 7 秒 / 台前南→石阶第七级 6 秒（上下第七级的人多，让一步）。两房之间若没有直接边，走法必须经过中间房（map_loader 用最短路算总耗时）。",
+  "rooms": [
+    {
+      "room_id": "baihutai",
+      "display_name": "白鹄台·台前",
+      "exits": [
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_west",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_yang",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_side",
+          "travel_seconds": 10
+        },
+        {
+          "to": "crowd",
+          "travel_seconds": 8
+        },
+        {
+          "to": "stall",
+          "travel_seconds": 8
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 10
+        },
+        {
+          "to": "phone",
+          "travel_seconds": 12
+        }
+      ],
+      "pos": [
+        450,
+        365
+      ]
+    },
+    {
+      "room_id": "baihutai_bei",
+      "display_name": "白鹄台·碑阴",
+      "exits": [
+        {
+          "to": "baihutai_yang",
+          "travel_seconds": 20
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 30
+        }
+      ],
+      "pos": [
+        450,
+        120
+      ]
+    },
+    {
+      "room_id": "baihutai_side",
+      "display_name": "白鹄台·碑侧",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_yang",
+          "travel_seconds": 12
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 25
+        },
+        {
+          "to": "baihutai_west",
+          "travel_seconds": 20
+        }
+      ],
+      "pos": [
+        540,
+        232
+      ]
+    },
+    {
+      "room_id": "baihutai_south",
+      "display_name": "白鹄台·台前南",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 10
+        },
+        {
+          "to": "stone_steps",
+          "travel_seconds": 4
+        },
+        {
+          "to": "stone_steps_7",
+          "travel_seconds": 6
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 20
+        },
+        {
+          "to": "gan_house",
+          "travel_seconds": 90
+        },
+        {
+          "to": "village_office",
+          "travel_seconds": 120
+        }
+      ],
+      "pos": [
+        450,
+        445
+      ]
+    },
+    {
+      "room_id": "baihutai_west",
+      "display_name": "白鹄台·台西",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_side",
+          "travel_seconds": 20
+        },
+        {
+          "to": "stall",
+          "travel_seconds": 25
+        }
+      ],
+      "pos": [
+        290,
+        365
+      ]
+    },
+    {
+      "room_id": "baihutai_yang",
+      "display_name": "白鹄台·碑阳",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_bei",
+          "travel_seconds": 20
+        },
+        {
+          "to": "baihutai_side",
+          "travel_seconds": 12
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 15
+        }
+      ],
+      "pos": [
+        450,
+        205
+      ]
+    },
+    {
+      "room_id": "crowd",
+      "display_name": "白鹄台·人群",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 8
+        },
+        {
+          "to": "crowd_back",
+          "travel_seconds": 4
+        },
+        {
+          "to": "stall",
+          "travel_seconds": 5
+        }
+      ],
+      "pos": [
+        600,
+        430
+      ]
+    },
+    {
+      "room_id": "crowd_back",
+      "display_name": "白鹄台·人群后",
+      "exits": [
+        {
+          "to": "crowd",
+          "travel_seconds": 4
+        },
+        {
+          "to": "stall",
+          "travel_seconds": 6
+        }
+      ],
+      "pos": [
+        600,
+        500
+      ]
+    },
+    {
+      "room_id": "gan_house",
+      "display_name": "甘阿婆的老屋",
+      "exits": [
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 90
+        }
+      ],
+      "pos": [
+        210,
+        560
+      ]
+    },
+    {
+      "room_id": "off_page",
+      "display_name": "余页之外（道院校录房·页外）",
+      "external": true,
+      "note": "页外：这一间不在余页里，玩家走不进去（没有任何入边）。exits 里的 0 秒不是走位耗时，而是『页外的声音直达电话』——郑守录在录房打电话，声音落在白鹄台的电话上（docs/story/04）。",
+      "exits": [
+        {
+          "to": "phone",
+          "travel_seconds": 0
+        }
+      ],
+      "pos": [
+        838,
+        120
+      ]
+    },
+    {
+      "room_id": "phone",
+      "display_name": "白鹄台·电话（页外唯一的声音）",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 12
+        }
+      ],
+      "pos": [
+        585,
+        350
+      ]
+    },
+    {
+      "room_id": "stall",
+      "display_name": "台下东侧·摊后",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 8
+        },
+        {
+          "to": "crowd",
+          "travel_seconds": 5
+        },
+        {
+          "to": "crowd_back",
+          "travel_seconds": 6
+        },
+        {
+          "to": "stall_east",
+          "travel_seconds": 4
+        },
+        {
+          "to": "stone_steps",
+          "travel_seconds": 15
+        },
+        {
+          "to": "baihutai_west",
+          "travel_seconds": 25
+        }
+      ],
+      "pos": [
+        720,
+        400
+      ]
+    },
+    {
+      "room_id": "stall_east",
+      "display_name": "台下东侧·摊位",
+      "exits": [
+        {
+          "to": "stall",
+          "travel_seconds": 4
+        },
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 60
+        },
+        {
+          "to": "stone_steps",
+          "travel_seconds": 15
+        }
+      ],
+      "pos": [
+        790,
+        450
+      ]
+    },
+    {
+      "room_id": "stele_base",
+      "display_name": "碑座（碑座东北角是纸鹄落点）",
+      "exits": [
+        {
+          "to": "baihutai",
+          "travel_seconds": 10
+        },
+        {
+          "to": "baihutai_yang",
+          "travel_seconds": 15
+        },
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 20
+        },
+        {
+          "to": "baihutai_side",
+          "travel_seconds": 25
+        },
+        {
+          "to": "stone_steps",
+          "travel_seconds": 8
+        }
+      ],
+      "pos": [
+        450,
+        285
+      ]
+    },
+    {
+      "room_id": "stone_steps",
+      "display_name": "三千二百级石阶·阶下",
+      "exits": [
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 5
+        },
+        {
+          "to": "stone_steps_7",
+          "travel_seconds": 6
+        },
+        {
+          "to": "stall_east",
+          "travel_seconds": 15
+        },
+        {
+          "to": "stall",
+          "travel_seconds": 15
+        },
+        {
+          "to": "stele_base",
+          "travel_seconds": 8
+        }
+      ],
+      "pos": [
+        450,
+        525
+      ]
+    },
+    {
+      "room_id": "stone_steps_7",
+      "display_name": "石阶第七级（邱德茂站住的地方）",
+      "exits": [
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 7
+        },
+        {
+          "to": "stone_steps",
+          "travel_seconds": 6
+        }
+      ],
+      "pos": [
+        450,
+        605
+      ]
+    },
+    {
+      "room_id": "village_office",
+      "display_name": "鹄台村村委会",
+      "exits": [
+        {
+          "to": "baihutai_south",
+          "travel_seconds": 120
+        }
+      ],
+      "pos": [
+        105,
+        645
+      ]
+    }
+  ]
+}
