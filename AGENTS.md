@@ -24,6 +24,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1 -Ci        #
 ```
 
 18 步 + 1 行结论，退出码 0 才算通过；细节在 `logs\check\<步骤>.log`，**只在失败时才去看**。
+**新 clone 的仓库第一次跑之前先导入一次资源**：`godot --headless --path . --import`
+（`.godot/` 是 Godot 的导入缓存、不入库；缺了它 18 步会全红在 `Cannot open file 'res://.godot/imported/...'`）。
 
 ## 2. 工具一览（都实现了，别再重造）
 
@@ -37,7 +39,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1 -Ci        #
 | `tools/gen_theme.gd` | `assets_src/theme.json` → `theme/default_theme.tres` |
 | `tools/gen_placeholders.gd` | `assets_src/placeholder_manifest.json` → `assets/placeholder/*.png` |
 | `tools/shot.gd` | **画面截图**（M2 起）：`--scene` / `--out` / `--seconds` / `--room` / `--after` / `--keys` / `--keys2` / `--scale` / `--prefs fresh\|seen` / `--open tutorial\|settlement`（后两个用来拍引导/结算弹窗）；**必须用带窗口的引擎跑**（`--headless` 存出空图），开跑前把 `user://` 的 `clue_store.json` 四件套 + `ui_prefs.json` 做字节快照、结束原样还回去（截图不许动玩家的档） |
-| `tools/snapshot.ps1` | **里程碑快照与漂移清单**（本机没有 git、也装不上：`winget install Git.Git` 下载 GitHub 超时 `0x80072efd`）：`-Note "说明"` 把源码/数据/文档/工具打包成 `.backups/snapshot-*.zip` 并写哈希清单 `.backups/last-manifest.txt`（**幂等：只读，不改项目文件**）；`-Diff` 列出相对上一个快照改了/新增/删除哪些文件；`-List` 列快照。大改前先打一份 |
+| `tools/snapshot.ps1` | **离线快照与漂移清单**（2026-10 起本机已装 Git 2.55，版本控制以 `git` 为主，这个工具留作额外兜底）：`-Note "说明"` 把源码/数据/文档/工具打包成 `.backups/snapshot-*.zip` 并写哈希清单 `.backups/last-manifest.txt`（**幂等：只读，不改项目文件**）；`-Diff` 列出相对上一个快照改了/新增/删除哪些文件；`-List` 列快照。大改前先打一份 |
 | `tools/gen_index.gd` / `tools/fix-ps1-bom.ps1` | 索引；给 `.ps1` 补 UTF-8 BOM（**编辑过含中文的 .ps1 后必跑** `-All`） |
 
 测试（全部 `extends SceneTree`、末行唯一 `RESULT:`、自带"执行数不足即 FAIL"守护）：
@@ -191,5 +193,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1 -Ci        #
 * **M2 平衡与节奏**：心灯 `DRAIN_PER_SECOND` 0.05 → 0.02（重开 -8 不动，`docs/story/04:1056` 的跨案预算原样有效）；观察点遍数锁进数据（`loop_min`：四字位 2、拓本残纸 2、半笔寸 3、灰布袋 4）。
 * 下一步（M2 候选，尚未排期）：正式美术/UI 与音频接入（现在全是 `_draw()` 图元）、NPC 立绘与 2D 走位实体、
   存档与设置界面、案一以外内容量、`docs/market/01` §3 里程碑表。
-* **版本控制**：本机没有 git（`winget install Git.Git` 卡在 GitHub 下载 `0x80072efd`，装不上）⇒ 用 `tools/snapshot.ps1` 打里程碑快照 + `-Diff` 看漂移；当前绿状态已快照 `.backups/snapshot-20261016-084932-M3_标题页_新手引导_结案结算_清调试痕迹.zip`（139 个文件 / 926 KB，18/18 闸门本地与 `-Ci` 双绿）。CI 就是闸门的 `-Ci` 模式（只校验、漂移即失败），日志在 `logs\check\`。
+* **版本控制**：`git` 已装（Git for Windows **2.55.0.5**，`C:\Program Files\Git\cmd\git.exe`，机器级 PATH 已含 ⇒ **新开的终端直接能用**，自带 Git Credential Manager ⇒ 首次 `git push` 会弹浏览器登录）。本地仓库已 `git init -b main` 并提交（首个提交 `e66ec23`）。
+  * `.gitignore` 口径：只让 **`dist/web`（Web 试玩版成品）** 入库；`.shots/`、`logs/`、`.backups/`、`.tools/`、`.pnpm-store/`、`.godot/` 都不入库；`export_presets.cfg` 要入库（导出参数得跟着仓库走）。
+  * `.gitattributes` 用 `* -text` **关掉换行转换** —— 本仓库有"生成物字节级漂移检查"，换行被 Git 改写会变成假 DRIFT；wasm/pck/ttf/png/zip 另标 `binary`。
+  * **Web 试玩版自动发布**：`.github/workflows/deploy.yml` 在 push 到 `main` 时把 `dist/web/` 发到 GitHub Pages（一次性设置、地址、为什么不需要 COOP/COEP 头，见 README §8）。
+  * `tools/snapshot.ps1` 保留为额外兜底（`-Note` 打 zip / `-Diff` 看漂移 / `-List` 列快照）。CI 就是闸门的 `-Ci` 模式（只校验、漂移即失败），日志在 `logs\check\`；**新 clone 第一次跑闸门前要先 `--import` 一次**（见 §1）。
   产品名已改为《茅山秘录·诡异录》（2026-10 收口）。

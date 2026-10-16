@@ -248,7 +248,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1
 | 心灯与落盘 | `tests/test_heart_lamp.gd` | **173 / 173 通过**（重开 -8、每秒 -0.02、结案 +25、离线每分钟 +1、归零丢一条记忆、熄灯期间重开再划一笔、双档轮换 + 损坏档另存 `.corrupt` + 崩溃现场不污染主档） |
 | M0/M1/M2 纵切片试玩 | `tests/test_slice_hud.gd` | **179 / 179 通过**：装载 → 走位耗时 → 到点取线索 → 落盘 → 按 R 重开（线索不丢、心灯 -8）→ **遍数锁**（站对房间、等对秒数，遍数不到就是看不见）→ 归零遗忘（灯灭期间找不回）→ 重新点亮后找回 → 快进 → 对话追问拿到 2 条只有对话才给的线索（含表现层"点选项"这条路）→ 世界递进与 NPC 记忆阶 → 推演板矛盾高亮/卡关预警/一键重演 → **线索齐+遍数够+画符仪式做完才结案 +25** → **画面层真的接到了状态源**（读到 17 间房/57 条边、每帧取状态、真的在画、`request_travel` 与文字 HUD 开关）→ **布局不变量**（牌子中心距 ≥120px、零重叠、右侧面板是真容器、NPC 棋子挂在自己格子里） |
 | 画面截图 | `tools/shot.gd`（带窗口引擎） | 产物在 `.shots/`：开局、甘阿婆对话、推演板摊开三张；**截图前后逐字节还原存档**（截图不该把玩家的心灯跑掉） |
-| 里程碑快照 | `tools/snapshot.ps1` | `-Note "说明"` 打包到 `.backups/`（120 个文件≈674 KB）+ 哈希清单；`-Diff` 看相对上一个快照改了哪些文件；`-List` 列快照。本机没有 git（winget 下载 GitHub 超时 `0x80072efd`），这就是版本控制的兜底 |
+| 里程碑快照 | `tools/snapshot.ps1` | `-Note "说明"` 打包到 `.backups/`（120 个文件≈674 KB）+ 哈希清单；`-Diff` 看相对上一个快照改了哪些文件；`-List` 列快照。2026-10 起本机已装 Git，**主版本控制是 `git`**（见 §8），这是额外兜底、以及没有 git 的机器上仍可用 |
 | 18 步闸门 | `tools\check.ps1` / `-Ci` | **18/18 通过，0 跳过，退出码 0（≈34s）**；本地模式（自动重写产物）与 `-Ci`（只校验）双模式均绿 |
 
 > 版本提示：本项目语法刻意保持在 Godot 4.0+ 通用范围内（不使用 4.4+ 才有的类型化字典
@@ -400,10 +400,61 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\check.ps1 -Ci    # CI�
 | 跨轮的"世界状态"与 NPC 记忆 | **已完成（M1 ③）**：`scripts/entities/loop_mutation.gd`（每遍多出来的痕迹，案一 = grow）+ `scripts/entities/npc_memory.gd`（6 名 NPC / 11 条规则，阶数按"遍数 + 手上线索"现算）；HUD 有两行实时显示 | 完成 |
 | 推演板与矛盾高亮 | **已完成（M1 ④）**：`scripts/entities/deduction_board.gd`（10 条推论 / 6 处对不上 / 6 条卡关提示），`B` 摊开、顶栏把最该注意的"对不上"顶到眼前；连着几遍没有新线索时主动给落点提示 | 完成 |
 | 画符（结案仪式） | **已完成（M1 ⑤）**：`data/runes/case_01_runes.json` + `scripts/data/rune_loader.gd` + `scripts/entities/rune_input.gd`，`G` 画符（方向键 + 小键盘斜向 + 回车/退格）；`require_ritual` 从"只显示"变成**硬门槛**（线索齐 + 遍数够 + 仪式做完才结案） | 完成 |
-| 心灯数值与离线恢复 | 数值随线索一起落盘（`clue_store.gd` 的 `lamp_value` + `seen_unix` 键）；**离线现实时间每分钟 +1 点**已按 `docs/story/09:175` 实现（`heart_lamp.gd` 的 `apply_offline_recovery()`，HUD 会写"[+] 离线恢复：心灯回了 N 点"）。没有这条恢复，案一在数值上通不了关：每遍固定烧 26 点、要走第 8 遍，熄灯后唯一重新点亮的途径是结案＝自锁 | 完成 |
+| 心灯数值与离线恢复 | 数值随线索一起落盘（`clue_store.gd` 的 `lamp_value` + `seen_unix` 键）；**离线现实时间每分钟 +1 点**已按 `docs/story/09:175` 实现（`heart_lamp.gd` 的 `apply_offline_recovery()`，HUD 会写"[+] 离线恢复：心灯回了 N 点"）。没有这条恢复，案一在数值上通不了关：每遍跑满要烧约 15 点（-8 重开 + 360 秒 × 0.02；M2 调值前是 26 点）、要走第 8 遍，熄灯后唯一重新点亮的途径是结案＝自锁 | 完成 |
 | 结案门槛 | 已按数据契约判定 `require_clues` + `require_min_loop` + `require_ritual`（案一是 6 条线索 + 第 8 遍之后 + 回照诵碑）。**遍数不只是门槛**：观察点自带遍数锁（`data/scenarios` 的 `loop_min`，依据 `docs/story/04` 的"获得方式"—— 四字位第 2 遍、半笔"寸"第 3 遍、灰布袋第 4 遍），走位耗时从来不是瓶颈（`tests/test_travel.gd` 用精确子集 DP 算过一遍能走遍全图） | 完成 |
-| 心灯代价预告 | 顶栏心灯条下面直接写清楚："照这样跑满每遍约 -26 点，还能撑 N 遍（结案 +25）"；撑不住那几遍会转红警告；灯灭时写明"余页之外真实时间每分钟回 1 点" —— 玩家不该自己一头撞上"永久划掉一条记忆" | 完成 |
+| 心灯代价预告 | 顶栏心灯条下面直接写清楚："照这样跑满每遍约 -16 点，还能撑 N 遍（结案 +25）"（数字按当前 `DRAIN_PER_SECOND` 现算）；撑不住那几遍会转红警告；灯灭时写明"余页之外真实时间每分钟回 1 点" —— 玩家不该自己一头撞上"永久划掉一条记忆" | 完成 |
 | 心灯数值平衡 | **已定（M2，2026-10）**：重开消耗 `DRAIN_PER_LOOP_RESET` **保持 8**（`docs/story/04:1056` 的跨案预算表就是按它算的：案一 8 次重开 -64、案二 6 次 -48、卷一 -112 + 结案 25 ⇒ 收卷余 ~13 的"卷末低谷"），把 `DRAIN_PER_SECOND` **0.05 → 0.02**（旧值下正常玩 9 遍额外 -54 ⇒ 与 -64 叠加必然熄灯；新值每遍每秒开销 ≈ -1.7，跨案预算与低谷设计原样保留，而"每遍跑满 360 秒"9 遍 ≈ -137 仍会熄灯、惩罚还在）。已同步 `tests/test_heart_lamp.gd`（173 项，且断言改读常量）与 `docs/story/09:174` | 已完成 |
 
 > 2026-10 的独立验收还发现两处**存档安全**问题（Windows 上 Godot 的 rename 会先删目标再移动 ⇒ 崩溃/掉电可能整档丢失；损坏档会被下一次存档覆盖），修复与回归测试见 `scripts/data/clue_store.gd` 顶部注释与 `tests/test_heart_lamp.gd`。
+
+## 8. 发布 Web 试玩版（GitHub Pages 自动部署）
+
+线上试玩版 = **已导出的静态文件**（`dist/web/`）由 `.github/workflows/deploy.yml` 直接发到 GitHub Pages；
+云端**不重编引擎**，所以"推上去了"就等于"线上就是这一版"。
+
+**一次性设置**（只能网页上点，文件改不了它）：
+仓库 → **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**。
+
+**日常发布流程**：
+
+```powershell
+# 1) 改了游戏代码后，先在本地重新导出（依赖 %APPDATA%\Godot\export_templates\4.7.2.stable\web_nothreads_release.zip）
+powershell -NoProfile -ExecutionPolicy Bypass -File tools\export_web.ps1
+
+# 2) 提交并推送到 main —— 推上去即自动部署
+git add .
+git commit -m "更新试玩版"
+git push
+```
+
+**永久试玩地址**：`https://<你的用户名>.github.io/<仓库名>/`（形如 `https://someuser.github.io/DeepLoopGame/`）。
+每次 Actions 运行的摘要（Summary）里也会打印同一个地址；仓库首页右侧的 **Deployments / github-pages** 也能点进去。
+
+**为什么 GitHub Pages 这种"不给自定义响应头"的静态托管也能跑**：
+
+* 导出用的是 **nothreads** 模板 ⇒ `index.html` 里 `GODOT_THREADS_ENABLED = false`，
+  `Engine.getMissingFeatures({threads:false})` **不检查** Cross-Origin Isolation / SharedArrayBuffer
+  （判断在 `dist/web/index.js:97` 的 `if (supportsThreads)` 分支里），所以不需要 COOP/COEP 头，也不会弹
+  "The following features required to run Godot projects on the Web are missing"。
+* `index.html` / `index.js` 里所有资源都是**相对路径**（`index.js` + `index.wasm` + `index.pck` + 图标 + 音频 worklet；
+  `index.js` 用 `document.currentScript.src` → `new URL(".", …)` 解析目录），因此在子路径 `/仓库名/` 下不会 404、不会黑屏。
+* 已按 GitHub Pages 的真实条件实测过：把 `dist/web` 挂到 `http://127.0.0.1:8010/repository/`
+  （普通 `python -m http.server`，**故意不发 COOP/COEP**）用无头 Edge 打开，标题页正常渲染、点【开始推演】能进主场景。
+
+**仓库口径**（`.gitignore` / `.gitattributes`）：
+
+* `dist/*` + `!dist/web/` ⇒ **只有 Web 试玩版入库**（当前 ≈38.6 MB，其中 `index.wasm` 39.5 MB 压缩后约 13 MB）；
+  `dist/web/*.import` 是导出时的副产物，不入库、也不发给玩家。
+* `.shots/`、`logs/`、`.backups/`、`.tools/`、`.pnpm-store/` 都是可再生的本地过程产物，不入库。
+* `.gitattributes` 里 `* -text` 关掉换行转换 —— 本仓库有"生成物字节级漂移检查"（`tools\check.ps1 -Ci`），
+  换行被 Git 改写会变成假 DRIFT；`*.wasm / *.pck / *.ttf / *.png / *.zip` 另标 `binary`。
+* `export_presets.cfg` **要提交**（导出参数得跟着仓库走，别人才能复现同一份产物）。
+
+**想改成"云端重编"**（可选，仓库会小很多）：把 `dist/web/` 从版本库移除，工作流里加一步装 Godot + 导出模板、
+再跑 `tools/export_web.ps1` 产出 `dist/web` 后才上传。代价是每次部署多花几分钟下载引擎与模板，
+好处是仓库里不再有 39 MB 的 wasm 二进制。
+
+> **别人 clone 下来第一次跑闸门**要先导入一次资源：`godot --headless --path . --import`
+> —— `.godot/` 是 Godot 的导入缓存、不入库，缺了它 18 步会全红在 `Cannot open file 'res://.godot/imported/...'`。
+> 这一步**只影响本地开发与闸门**，不影响 GitHub Pages 部署：工作流只上传 `dist/web/` 里的成品，不在云端跑引擎。
 
